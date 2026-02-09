@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const config = {
         wallets: [
-            { name: "USDT (TRC20)", address: "TSywPmrLroRmQzef5zwei9hmciCxkJe6Tv", logo: "images/tether.png" },
-            { name: "USDT (Polygon)", address: "0x822C3d249789c60b3022529BC08572F3412Dbf73", logo: "images/tether.png" },
-            { name: "TRX (Tron)", address: "TSywPmrLroRmQzef5zwei9hmciCxkJe6Tv", logo: "images/tron.png" },
-            { name: "Polygon (Matic)", address: "0x822C3d249789c60b3022529BC08572F3412Dbf73", logo: "images/polygon.png" },
-            { name: "Ethereum", address: "0x822C3d249789c60b3022529BC08572F3412Dbf73", logo: "images/ethereum.png" },
-            { name: "Solana", address: "9dmKY1ofjezfekSJNsJabZAhL3MftSUiKMFWkxFLWx9L", logo: "images/solana.png" },
-            { name: "Toncoin", address: "UQBQVjaAVXltlnX9522KAS9NE-cjmqyBb0Gze6tAsifoNTTF", logo: "images/ton.png" }
+            { name: "USDT (TRC20)", address: "TPDgDE7nEKHnDLX25wLtdjjs76nAK9pQE7", logo: "images/tether.png" },
+            { name: "USDT (Polygon)", address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/tether.png" },
+            { name: "TRX (Tron)", address: "TPDgDE7nEKHnDLX25wLtdjjs76nAK9pQE7", logo: "images/tron.png" },
+            { name: "Polygon (Matic)", address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/polygon.png" },
+            { name: "Ethereum", address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/ethereum.png" },
+            { name: "Solana", address: "BnQ11hLZTDJQBZSzVWxJshT3o1SEUWBn1QahdxTYDH8d", logo: "images/solana.png" },
+            { name: "Shiba", address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/Shiba.png" }
         ],
         translations: {
             en: {
