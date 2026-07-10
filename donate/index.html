@@ -12,10 +12,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
     <div id="transition-overlay"></div>
+
     <div class="container">
         <header>
             <div id="lang-switcher" class="lang-switcher">
@@ -27,14 +28,28 @@
             <h1 data-lang-key="main_title">حمایت از فعالیت من</h1>
             <p data-lang-key="main_subtitle">کمک شما به من انگیزه می‌دهد تا محتوای بهتر و بیشتری تولید کنم، هر مبلغی برای من ارزشمند است.</p>
         </header>
-        <section class="donation-section">
-            <h2 class="section-title" data-lang-key="section_crypto">حمایت با ارز دیجیتال</h2>
+
+        <nav id="tab-container" class="tab-nav">
+            <button class="tab-btn active" data-tab="crypto">
+                <span class="tab-icon">₿</span>
+                <span class="tab-label" data-lang-key="tab_crypto">ارز دیجیتال</span>
+                <span class="tab-desc" data-lang-key="tab_crypto_desc">USDT، ترون، اتریوم، سولانا و...</span>
+            </button>
+            <button class="tab-btn" data-tab="rial">
+                <span class="tab-icon">﷼</span>
+                <span class="tab-label" data-lang-key="tab_rial">ریالی (تومان)</span>
+                <span class="tab-desc" data-lang-key="tab_rial_desc">پرداخت به تومان</span>
+            </button>
+        </nav>
+
+        <section class="tab-panel active" data-panel="crypto">
             <main id="wallet-container"></main>
         </section>
-        <section class="donation-section">
-            <h2 class="section-title" data-lang-key="section_rial">حمایت ریالی</h2>
+
+        <section class="tab-panel" data-panel="rial">
             <main id="rial-container"></main>
         </section>
+
         <footer>
             <div class="social-links">
                 <a href="https://github.com/monsmain" target="_blank" aria-label="GitHub" rel="noopener">
@@ -53,6 +68,7 @@
             <p data-lang-key="footer_thanks">از حمایت شما سپاسگزارم❤️</p>
         </footer>
     </div>
-    <script src="script.js?v=4"></script>
+
+    <script src="script.js?v=5"></script>
 </body>
 </html>
