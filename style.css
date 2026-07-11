@@ -1,0 +1,883 @@
+:root {
+    --bg-color: #0a0c14;
+    --card-bg: rgba(20, 24, 48, 0.55);
+    --card-bg-hover: rgba(32, 38, 72, 0.75);
+    --border: rgba(138, 143, 255, 0.22);
+    --border-glow: rgba(115, 79, 255, 0.4);
+    --glow: rgba(115, 79, 255, 0.35);
+    --accent: #a374ff;
+    --accent-2: #c4a0ff;
+    --text-primary: #f0f0f0;
+    --text-secondary: #9ca0c8;
+    --text-muted: #6a6e8a;
+    --rial-accent: #4ade80;
+    --rial-accent-2: #6ee7a0;
+    --rial-bg: rgba(18, 28, 26, 0.55);
+    --rial-bg-hover: rgba(26, 38, 34, 0.75);
+    --rial-border: rgba(74, 222, 128, 0.2);
+    --rial-border-glow: rgba(74, 222, 128, 0.4);
+    --font-en: 'Poppins', sans-serif;
+    --font-fa: 'Vazirmatn', sans-serif;
+    --radius: 16px;
+    --radius-sm: 10px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#galaxy-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+body.lang-fa {
+    font-family: var(--font-fa);
+    direction: rtl;
+}
+
+body.lang-en {
+    font-family: var(--font-en);
+    direction: ltr;
+}
+
+#transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    backdrop-filter: blur(20px);
+}
+
+#transition-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.container {
+    max-width: 540px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── Language Switcher ─── */
+
+.lang-switcher {
+    position: absolute;
+    top: -8px;
+    right: 0;
+    font-size: 0.82rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10;
+    animation: fadeInDown 0.5s 0.1s ease-out backwards;
+}
+
+body.lang-fa .lang-switcher {
+    right: auto;
+    left: 0;
+}
+
+.lang-switcher button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-en);
+    font-weight: 600;
+    padding: 4px 6px;
+    transition: color 0.3s ease;
+}
+
+.lang-switcher button:hover {
+    color: var(--text-primary);
+}
+
+.lang-switcher button.active {
+    color: var(--accent);
+    cursor: default;
+}
+
+.lang-separator {
+    color: var(--text-muted);
+    margin: 0 2px;
+}
+
+/* ─── Header ─── */
+
+header {
+    margin-bottom: 2rem;
+}
+
+.main-logo {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    box-shadow: 0 0 30px var(--glow), 0 0 60px rgba(115, 79, 255, 0.15);
+    margin-bottom: 1.2rem;
+    margin-top: 32px;
+    animation: logoIntro 1s cubic-bezier(0.34, 1.56, 0.64, 1), logoPulse 4s ease-in-out infinite 1s;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.main-logo:hover {
+    transform: scale(1.08) rotate(3deg);
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    background: linear-gradient(90deg, #f0f0f0, #a374ff, #f0f0f0, #c4a0ff, #f0f0f0);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShimmer 6s linear infinite, fadeInDown 0.7s 0.3s ease-out backwards;
+}
+
+header p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    max-width: 88%;
+    margin: 0 auto;
+    line-height: 1.7;
+    animation: fadeInDown 0.7s 0.5s ease-out backwards;
+}
+
+/* ─── Tab Navigation ─── */
+
+.tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.6s 0.2s ease-out backwards;
+}
+
+.tab-btn {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.tab-btn:hover {
+    border-color: var(--border-glow);
+    background: var(--card-bg-hover);
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(115, 79, 255, 0.15), rgba(115, 79, 255, 0.05));
+    box-shadow: 0 4px 20px var(--glow);
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background-size: 200% 100%;
+    animation: tabShine 3s linear infinite;
+}
+
+.tab-btn.active[data-tab="rial"] {
+    border-color: var(--rial-accent);
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.12), rgba(74, 222, 128, 0.03));
+    box-shadow: 0 4px 20px rgba(74, 222, 128, 0.2);
+}
+
+.tab-btn.active[data-tab="rial"]::after {
+    background: linear-gradient(90deg, transparent, var(--rial-accent), transparent);
+    background-size: 200% 100%;
+}
+
+.tab-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.tab-desc {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+/* ─── Tab Panels ─── */
+
+.tab-panel {
+    display: none;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* ─── Crypto Wallet Cards ─── */
+
+.wallet-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    margin-bottom: 0.8rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+    transform-style: preserve-3d;
+    perspective: 600px;
+}
+
+.wallet-card:hover {
+    transform: translateY(-5px) scale(1.015);
+    box-shadow: 0 14px 40px var(--glow), 0 0 0 1px var(--border-glow);
+    border-color: var(--border-glow);
+    background: var(--card-bg-hover);
+}
+
+.wallet-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+body.lang-fa .wallet-header {
+    flex-direction: row-reverse;
+}
+
+.crypto-logo {
+    width: 32px;
+    height: 32px;
+}
+
+body.lang-en .crypto-logo {
+    margin-right: 0.8rem;
+}
+
+body.lang-fa .crypto-logo {
+    margin-left: 0.8rem;
+}
+
+.wallet-header h3 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-primary);
+}
+
+.address-bar {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+body.lang-fa .address-bar {
+    flex-direction: row-reverse;
+}
+
+.address-text {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    word-break: break-all;
+    text-align: left;
+    direction: ltr;
+}
+
+.copy-btn {
+    background: linear-gradient(135deg, #4a4e8a, #5b5faa);
+    color: var(--text-primary);
+    border: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.82rem;
+    transition: background 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+}
+
+body.lang-en .copy-btn {
+    margin-left: 0.7rem;
+}
+
+body.lang-fa .copy-btn {
+    margin-right: 0.7rem;
+}
+
+.copy-btn:hover {
+    background: linear-gradient(135deg, #6367b8, #7a7ed8);
+    transform: scale(1.04);
+}
+
+.copy-btn:active {
+    transform: scale(0.96);
+}
+
+.copy-btn.copied {
+    background: linear-gradient(135deg, #22a348, #2ec958);
+    animation: copyRing 0.6s ease-out;
+}
+
+/* ─── Rial Donation Cards ─── */
+
+.rial-card {
+    background: var(--rial-bg);
+    border: 1px solid var(--rial-border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 0.7rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+}
+
+.rial-card:hover {
+    transform: translateY(-5px) scale(1.015);
+    box-shadow: 0 14px 40px rgba(74, 222, 128, 0.25), 0 0 0 1px var(--rial-border-glow);
+    border-color: var(--rial-border-glow);
+    background: var(--rial-bg-hover);
+}
+
+.rial-card.featured {
+    border-color: var(--rial-accent);
+    animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards, featuredGlow 3s ease-in-out infinite 0.8s;
+}
+
+.rial-card.featured:hover {
+    box-shadow: 0 10px 36px rgba(74, 222, 128, 0.3);
+}
+
+.rial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+body.lang-fa .rial-header {
+    flex-direction: row-reverse;
+}
+
+.rial-amount {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.rial-badge {
+    background: linear-gradient(135deg, #22a348, #2ec958);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.rial-bar {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+body.lang-fa .rial-bar {
+    flex-direction: row-reverse;
+}
+
+.rial-value {
+    font-family: var(--font-fa);
+    font-size: 0.92rem;
+    color: var(--rial-accent);
+    font-weight: 500;
+}
+
+.rial-btn {
+    background: linear-gradient(135deg, #22a348, #2ec958);
+    color: #fff;
+    border: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.15s ease;
+    display: inline-block;
+}
+
+body.lang-en .rial-btn {
+    margin-left: 0.7rem;
+}
+
+body.lang-fa .rial-btn {
+    margin-right: 0.7rem;
+}
+
+.rial-btn:hover {
+    background: linear-gradient(135deg, #2ec958, #3be068);
+    transform: scale(1.04);
+}
+
+.rial-btn:active {
+    transform: scale(0.96);
+}
+
+/* ─── Footer ─── */
+
+footer {
+    margin-top: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    animation: fadeInUp 0.8s 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.social-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, border-color 0.3s ease;
+    animation: socialBounce 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.social-links a:nth-child(1) { animation-delay: 0.8s; }
+.social-links a:nth-child(2) { animation-delay: 0.9s; }
+.social-links a:nth-child(3) { animation-delay: 1.0s; }
+.social-links a:nth-child(4) { animation-delay: 1.1s; }
+
+.social-links a:hover {
+    transform: scale(1.2) rotate(-5deg);
+    background-color: rgba(58, 62, 96, 0.8);
+    border-color: var(--border-glow);
+}
+
+.social-links img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: grayscale(1) brightness(1.5);
+    transition: filter 0.3s ease;
+}
+
+.social-links a:hover img {
+    filter: grayscale(0) brightness(1);
+}
+
+/* ─── Animations ─── */
+
+@keyframes fadeInDown {
+    0%   { opacity: 0; transform: translateY(-30px) scale(0.95); filter: blur(6px); }
+    60%  { opacity: 0.9; filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes fadeInUp {
+    0%   { opacity: 0; transform: translateY(30px) scale(0.95); filter: blur(6px); }
+    60%  { opacity: 0.9; filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes cardReveal {
+    0%   { opacity: 0; transform: translateY(30px) scale(0.92); filter: blur(4px); }
+    60%  { opacity: 0.8; transform: translateY(-4px) scale(1.01); filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes logoPulse {
+    0%, 100% { box-shadow: 0 0 30px var(--glow), 0 0 60px rgba(115, 79, 255, 0.15); }
+    50%      { box-shadow: 0 0 40px var(--glow), 0 0 80px rgba(115, 79, 255, 0.3), 0 0 120px rgba(115, 79, 255, 0.1); }
+}
+
+@keyframes logoIntro {
+    0%   { opacity: 0; transform: scale(0.3) rotate(-180deg); filter: blur(8px); }
+    50%  { opacity: 0.7; }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
+}
+
+@keyframes featuredGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.15); }
+    50%      { box-shadow: 0 0 30px rgba(74, 222, 128, 0.3), 0 0 60px rgba(74, 222, 128, 0.1); }
+}
+
+@keyframes copyRing {
+    0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
+    70%  { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+@keyframes tabShine {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes orbFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(-40px, 60px) scale(1.1); }
+    66%      { transform: translate(30px, -30px) scale(0.9); }
+}
+
+@keyframes orbFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(50px, -40px) scale(1.15); }
+    66%      { transform: translate(-30px, 30px) scale(0.85); }
+}
+
+@keyframes orbFloat3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    33%      { transform: translate(-60%, -40%) scale(1.2); }
+    66%      { transform: translate(-40%, -60%) scale(0.8); }
+}
+
+@keyframes socialBounce {
+    0%   { opacity: 0; transform: scale(0.3) translateY(20px); }
+    50%  { transform: scale(1.15) translateY(-5px); }
+    70%  { transform: scale(0.95) translateY(2px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes textShimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+/* ─── Responsive: Mobile ─── */
+
+@media (max-width: 520px) {
+    body {
+        padding: 1rem 0.5rem;
+        align-items: flex-start;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 0.82rem;
+        max-width: 95%;
+    }
+
+    .main-logo {
+        width: 72px;
+        height: 72px;
+        margin-top: 28px;
+    }
+
+    .tab-nav {
+        gap: 0.4rem;
+    }
+
+    .tab-btn {
+        padding: 0.7rem 0.4rem;
+    }
+
+    .tab-label {
+        font-size: 0.82rem;
+    }
+
+    .tab-desc {
+        font-size: 0.65rem;
+        display: none;
+    }
+
+    .wallet-card, .rial-card {
+        padding: 1rem 0.85rem;
+        margin-bottom: 0.65rem;
+    }
+
+    .wallet-header h3, .rial-amount {
+        font-size: 0.92rem;
+    }
+
+    .crypto-logo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .address-text {
+        font-size: 0.68rem;
+    }
+
+    .copy-btn, .rial-btn {
+        padding: 0.35rem 0.65rem;
+        font-size: 0.72rem;
+    }
+
+    .rial-value {
+        font-size: 0.82rem;
+    }
+
+    .rial-badge {
+        font-size: 0.65rem;
+        padding: 2px 8px;
+    }
+
+    .social-links a {
+        width: 38px;
+        height: 38px;
+    }
+
+    .social-links img {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 360px) {
+    .tab-desc { display: none; }
+    .tab-label { font-size: 0.75rem; }
+    header h1 { font-size: 1.3rem; }
+    .address-text { font-size: 0.6rem; }
+}
+
+/* ─── QR Modal ─── */
+
+.qr-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 15, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.qr-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.qr-modal {
+    background: var(--card-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 20px;
+    padding: 2rem 2.2rem 1.6rem;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--glow);
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.qr-overlay.active .qr-modal {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.qr-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.qr-close:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.qr-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.2rem;
+    margin-top: 0.4rem;
+}
+
+.qr-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 12px;
+    background: #f0f0f0;
+    border-radius: 16px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.qr-code img,
+.qr-code canvas {
+    border-radius: 8px;
+}
+
+.qr-hint {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    margin-top: 0.6rem;
+}
+
+/* ─── Address Actions (QR + Copy buttons) ─── */
+
+.address-actions {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+body.lang-fa .address-actions {
+    flex-direction: row-reverse;
+}
+
+.qr-btn {
+    background: rgba(115, 79, 255, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(115, 79, 255, 0.3);
+    border-radius: 6px;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.qr-btn:hover {
+    background: rgba(115, 79, 255, 0.3);
+    border-color: var(--accent);
+    transform: scale(1.08);
+}
+
+.qr-btn:active {
+    transform: scale(0.92);
+}
+
+/* ─── Tab Icons (SVG) ─── */
+
+.tab-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.tab-icon-crypto {
+    color: var(--accent);
+}
+
+.tab-btn.active[data-tab="crypto"] .tab-icon-crypto {
+    color: var(--accent-2);
+}
+
+.tab-icon-rial {
+    color: var(--rial-accent);
+}
+
+.tab-btn.active[data-tab="rial"] .tab-icon-rial {
+    color: var(--rial-accent-2);
+}
