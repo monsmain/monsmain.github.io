@@ -105,6 +105,7 @@ body.lang-en {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 10;
+    animation: fadeInDown 0.5s 0.1s ease-out backwards;
 }
 
 body.lang-fa .lang-switcher {
@@ -141,7 +142,6 @@ body.lang-fa .lang-switcher {
 
 header {
     margin-bottom: 2rem;
-    animation: fadeInDown 0.8s ease-out;
 }
 
 .main-logo {
@@ -152,7 +152,7 @@ header {
     box-shadow: 0 0 30px var(--glow), 0 0 60px rgba(115, 79, 255, 0.15);
     margin-bottom: 1.2rem;
     margin-top: 32px;
-    animation: logoPulse 4s ease-in-out infinite;
+    animation: logoIntro 1s cubic-bezier(0.34, 1.56, 0.64, 1), logoPulse 4s ease-in-out infinite 1s;
     transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -169,7 +169,7 @@ header h1 {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: textShimmer 6s linear infinite;
+    animation: textShimmer 6s linear infinite, fadeInDown 0.7s 0.3s ease-out backwards;
 }
 
 header p {
@@ -178,6 +178,7 @@ header p {
     max-width: 88%;
     margin: 0 auto;
     line-height: 1.7;
+    animation: fadeInDown 0.7s 0.5s ease-out backwards;
 }
 
 /* ─── Tab Navigation ─── */
@@ -240,11 +241,6 @@ header p {
 .tab-btn.active[data-tab="rial"]::after {
     background: linear-gradient(90deg, transparent, var(--rial-accent), transparent);
     background-size: 200% 100%;
-}
-
-.tab-icon {
-    font-size: 1.8rem;
-    line-height: 1;
 }
 
 .tab-label {
@@ -555,13 +551,15 @@ footer {
 /* ─── Animations ─── */
 
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-25px) scale(0.96); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+    0%   { opacity: 0; transform: translateY(-30px) scale(0.95); filter: blur(6px); }
+    60%  { opacity: 0.9; filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(25px) scale(0.96); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+    0%   { opacity: 0; transform: translateY(30px) scale(0.95); filter: blur(6px); }
+    60%  { opacity: 0.9; filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
 @keyframes cardReveal {
@@ -573,6 +571,12 @@ footer {
 @keyframes logoPulse {
     0%, 100% { box-shadow: 0 0 30px var(--glow), 0 0 60px rgba(115, 79, 255, 0.15); }
     50%      { box-shadow: 0 0 40px var(--glow), 0 0 80px rgba(115, 79, 255, 0.3), 0 0 120px rgba(115, 79, 255, 0.1); }
+}
+
+@keyframes logoIntro {
+    0%   { opacity: 0; transform: scale(0.3) rotate(-180deg); filter: blur(8px); }
+    50%  { opacity: 0.7; }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
 }
 
 @keyframes featuredGlow {
@@ -656,10 +660,6 @@ footer {
         padding: 0.7rem 0.4rem;
     }
 
-    .tab-icon {
-        font-size: 1.5rem;
-    }
-
     .tab-label {
         font-size: 0.82rem;
     }
@@ -717,4 +717,167 @@ footer {
     .tab-label { font-size: 0.75rem; }
     header h1 { font-size: 1.3rem; }
     .address-text { font-size: 0.6rem; }
+}
+
+/* ─── QR Modal ─── */
+
+.qr-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 15, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.qr-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.qr-modal {
+    background: var(--card-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 20px;
+    padding: 2rem 2.2rem 1.6rem;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--glow);
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.qr-overlay.active .qr-modal {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.qr-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.qr-close:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.qr-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.2rem;
+    margin-top: 0.4rem;
+}
+
+.qr-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 12px;
+    background: #f0f0f0;
+    border-radius: 16px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.qr-code img,
+.qr-code canvas {
+    border-radius: 8px;
+}
+
+.qr-hint {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    margin-top: 0.6rem;
+}
+
+/* ─── Address Actions (QR + Copy buttons) ─── */
+
+.address-actions {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+body.lang-fa .address-actions {
+    flex-direction: row-reverse;
+}
+
+.qr-btn {
+    background: rgba(115, 79, 255, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(115, 79, 255, 0.3);
+    border-radius: 6px;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.qr-btn:hover {
+    background: rgba(115, 79, 255, 0.3);
+    border-color: var(--accent);
+    transform: scale(1.08);
+}
+
+.qr-btn:active {
+    transform: scale(0.92);
+}
+
+/* ─── Tab Icons (SVG) ─── */
+
+.tab-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.tab-icon-crypto {
+    color: var(--accent);
+}
+
+.tab-btn.active[data-tab="crypto"] .tab-icon-crypto {
+    color: var(--accent-2);
+}
+
+.tab-icon-rial {
+    color: var(--rial-accent);
+}
+
+.tab-btn.active[data-tab="rial"] .tab-icon-rial {
+    color: var(--rial-accent-2);
 }

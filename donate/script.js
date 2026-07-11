@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 copied_button: "Copied!",
                 rial_button: "Donate",
                 rial_popular: "Popular",
-                footer_thanks: "Thank you for your support❤️"
+                footer_thanks: "Thank you for your support❤️",
+                qr_hint: "Scan with your wallet app"
             },
             fa: {
                 page_title: "حمایت مالی",
@@ -47,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 copied_button: "کپی شد!",
                 rial_button: "پرداخت",
                 rial_popular: "محبوب",
-                footer_thanks: "از حمایت شما سپاسگزارم❤️"
+                footer_thanks: "از حمایت شما سپاسگزارم❤️",
+                qr_hint: "با کیف پول خود اسکن کنید"
             }
         },
         transition_delay: 400
@@ -120,7 +122,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="address-bar">
                     <span class="address-text">${wallet.address}</span>
-                    <button class="copy-btn" data-address="${wallet.address}" data-lang-key="copy_button"></button>
+                    <div class="address-actions">
+                        <button class="qr-btn" data-qr="${wallet.address}" data-name="${wallet.name}" title="QR">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                                <rect x="14" y="14" width="3" height="3" rx="0.5"/>
+                                <rect x="18" y="18" width="3" height="3" rx="0.5"/>
+                                <rect x="14" y="18" width="3" height="3" rx="0.5"/>
+                                <rect x="18" y="14" width="3" height="3" rx="0.5"/>
+                            </svg>
+                        </button>
+                        <button class="copy-btn" data-address="${wallet.address}" data-lang-key="copy_button"></button>
+                    </div>
                 </div>`;
             dom.walletContainer.appendChild(card);
         });
@@ -167,6 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupEventListeners() {
         if (dom.walletContainer) {
             dom.walletContainer.addEventListener('click', (e) => {
+                var qrBtn = e.target.closest('.qr-btn');
+                if (qrBtn) {
+                    var addr = qrBtn.dataset.qr;
+                    var name = qrBtn.dataset.name || '';
+                    openQRModal(addr, name);
+                    return;
+                }
+
                 if (e.target.classList.contains('copy-btn')) {
                     const button = e.target;
                     const address = button.dataset.address;
@@ -205,6 +228,23 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        var qrOverlay = document.getElementById('qr-overlay');
+        var qrClose = document.getElementById('qr-close');
+
+        if (qrClose) {
+            qrClose.addEventListener('click', closeQRModal);
+        }
+        if (qrOverlay) {
+            qrOverlay.addEventListener('click', function(e) {
+                if (e.target === qrOverlay) closeQRModal();
+            });
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && qrOverlay && qrOverlay.classList.contains('active')) {
+                closeQRModal();
+            }
+        });
+
         if (dom.langSwitcher) {
             dom.langSwitcher.addEventListener('click', (e) => {
                 const langButton = e.target.closest('[data-lang]');
@@ -226,6 +266,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+    }
+
+    function openQRModal(address, name) {
+        var overlay = document.getElementById('qr-overlay');
+        var qrCode = document.getElementById('qr-code');
+        var qrTitle = document.getElementById('qr-title');
+        if (!overlay || !qrCode || typeof QRCode === 'undefined') return;
+
+        var lang = document.documentElement.lang;
+        var lp = config.translations[lang] || config.translations.en;
+
+        qrTitle.textContent = name + (lang === 'fa' ? ' — اسکن کنید' : ' — Scan to Pay');
+
+        qrCode.innerHTML = '';
+        new QRCode(qrCode, {
+            text: address,
+            width: 200,
+            height: 200,
+            colorDark: '#0a0c14',
+            colorLight: '#f0f0f0',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+
+        var canvas = qrCode.querySelector('canvas');
+        if (canvas) {
+            canvas.style.borderRadius = '12px';
+            canvas.style.display = 'block';
+            canvas.style.margin = '0 auto';
+        }
+
+        var hint = document.querySelector('.qr-hint');
+        if (hint) hint.textContent = lp.qr_hint || '';
+
+        overlay.classList.add('active');
+    }
+
+    function closeQRModal() {
+        var overlay = document.getElementById('qr-overlay');
+        if (overlay) overlay.classList.remove('active');
     }
 
     function init() {
