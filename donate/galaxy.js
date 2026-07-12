@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function init() {
         scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 4000);
-        camera.position.set(0, 180, 380);
+        camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 4000);
+        camera.position.set(0, 150, 320);
         camera.lookAt(0, 0, 0);
 
         renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
@@ -34,47 +34,40 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function buildGalaxy() {
-        var count = 22000;
+        var count = 15000;
         var positions = new Float32Array(count * 3);
         var colors = new Float32Array(count * 3);
-        var arms = 4;
-        var radius = 450;
-        var armWidth = 0.12;
+        var arms = 3;
+        var radius = 420;
 
-        var cIn = new THREE.Color(0xfff0c0);
-        var cMid = new THREE.Color(0xff5e9e);
-        var cOut = new THREE.Color(0x3a7bff);
-        var cEdge = new THREE.Color(0x1a2a5e);
+        var cIn = new THREE.Color(0xffaa55);
+        var cMid = new THREE.Color(0xff44aa);
+        var cOut = new THREE.Color(0x4477ff);
 
         for (var i = 0; i < count; i++) {
             var i3 = i * 3;
-            var r = Math.pow(Math.random(), 0.35) * radius + 10;
-            var armIdx = i % arms;
-            var arm = (armIdx / arms) * Math.PI * 2;
-            var spin = r * 0.025;
+            var r = Math.pow(Math.random(), 0.5) * radius + 15;
+            var arm = (i % arms) / arms * Math.PI * 2;
+            var spin = r * 0.018;
             var a = arm + spin;
 
-            var spreadFactor = armWidth * (1 - r / radius * 0.5);
-            var spread = (Math.random() - 0.5) * 25 * spreadFactor;
-            var y = (Math.random() - 0.5) * 14 * Math.pow(1 - r / radius, 1.5);
+            var spread = (Math.random() - 0.5) * 15 * (r / radius + 0.2);
+            var y = (Math.random() - 0.5) * 18 * Math.pow(1 - r / radius, 1.5);
 
-            positions[i3] = Math.cos(a) * r + spread * Math.cos(a + 1.5708);
+            positions[i3] = Math.cos(a) * r + spread;
             positions[i3 + 1] = y;
-            positions[i3 + 2] = Math.sin(a) * r + spread * Math.sin(a + 1.5708);
+            positions[i3 + 2] = Math.sin(a) * r + spread;
 
             var t = r / radius;
             var col;
-            if (t < 0.15) {
-                col = cIn.clone().lerp(cMid, t / 0.15);
-            } else if (t < 0.55) {
-                col = cMid.clone().lerp(cOut, (t - 0.15) / 0.4);
+            if (t < 0.3) {
+                col = cIn.clone().lerp(cMid, t / 0.3);
             } else {
-                col = cOut.clone().lerp(cEdge, (t - 0.55) / 0.45);
+                col = cMid.clone().lerp(cOut, (t - 0.3) / 0.7);
             }
-            var brightness = 0.7 + Math.random() * 0.3;
-            colors[i3] = col.r * brightness;
-            colors[i3 + 1] = col.g * brightness;
-            colors[i3 + 2] = col.b * brightness;
+            colors[i3] = col.r;
+            colors[i3 + 1] = col.g;
+            colors[i3 + 2] = col.b;
         }
 
         var geo = new THREE.BufferGeometry();
@@ -84,18 +77,18 @@ document.addEventListener('DOMContentLoaded', function () {
         var tex = createStarTexture();
 
         var mat = new THREE.PointsMaterial({
-            size: 5,
+            size: 6,
             map: tex,
             vertexColors: true,
             transparent: true,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: true,
-            opacity: 0.92
+            opacity: 0.9
         });
 
         galaxy = new THREE.Points(geo, mat);
-        galaxy.rotation.x = 0.5;
+        galaxy.rotation.x = 0.45;
         scene.add(galaxy);
     }
 
@@ -106,9 +99,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var ctx2 = c.getContext('2d');
         var grad = ctx2.createRadialGradient(32, 32, 0, 32, 32, 32);
         grad.addColorStop(0, 'rgba(255,255,255,1)');
-        grad.addColorStop(0.1, 'rgba(255,255,255,0.9)');
-        grad.addColorStop(0.3, 'rgba(255,255,255,0.4)');
-        grad.addColorStop(0.6, 'rgba(255,255,255,0.1)');
+        grad.addColorStop(0.15, 'rgba(255,255,255,0.85)');
+        grad.addColorStop(0.4, 'rgba(255,255,255,0.3)');
         grad.addColorStop(1, 'rgba(255,255,255,0)');
         ctx2.fillStyle = grad;
         ctx2.fillRect(0, 0, 64, 64);
@@ -121,26 +113,20 @@ document.addEventListener('DOMContentLoaded', function () {
     function buildCore() {
         var tex = createStarTexture();
 
-        var positions = new Float32Array(1500 * 3);
-        var colors = new Float32Array(1500 * 3);
-        var cCore = new THREE.Color(0xfff5dd);
-        var cGlow = new THREE.Color(0xff7799);
-        var cGlow2 = new THREE.Color(0xff9944);
+        var positions = new Float32Array(900 * 3);
+        var colors = new Float32Array(900 * 3);
+        var cCore = new THREE.Color(0xffeecc);
+        var cGlow = new THREE.Color(0xff6699);
 
-        for (var i = 0; i < 1500; i++) {
+        for (var i = 0; i < 900; i++) {
             var i3 = i * 3;
-            var r = Math.pow(Math.random(), 2.5) * 80;
+            var r = Math.pow(Math.random(), 2) * 70;
             var theta = Math.random() * Math.PI * 2;
             var phi = Math.acos(2 * Math.random() - 1);
             positions[i3] = r * Math.sin(phi) * Math.cos(theta);
-            positions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.3;
+            positions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.4;
             positions[i3 + 2] = r * Math.cos(phi);
-            var col;
-            if (r < 30) {
-                col = cCore.clone().lerp(cGlow, r / 30);
-            } else {
-                col = cGlow.clone().lerp(cGlow2, (r - 30) / 50);
-            }
+            var col = cCore.clone().lerp(cGlow, r / 70);
             colors[i3] = col.r;
             colors[i3 + 1] = col.g;
             colors[i3 + 2] = col.b;
@@ -151,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
         geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         var mat = new THREE.PointsMaterial({
-            size: 22,
+            size: 18,
             map: tex,
             vertexColors: true,
             transparent: true,
@@ -166,21 +152,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function buildDistantStars() {
-        var count = 3500;
+        var count = 2500;
         var positions = new Float32Array(count * 3);
         var colors = new Float32Array(count * 3);
 
         for (var i = 0; i < count; i++) {
             var i3 = i * 3;
-            var r = 1200 + Math.random() * 1800;
+            var r = 1200 + Math.random() * 1500;
             var theta = Math.random() * Math.PI * 2;
             var phi = Math.acos(2 * Math.random() - 1);
             positions[i3] = r * Math.sin(phi) * Math.cos(theta);
             positions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
             positions[i3 + 2] = r * Math.cos(phi);
-            var b = 0.4 + Math.random() * 0.6;
-            colors[i3] = b * 0.6;
-            colors[i3 + 1] = b * 0.75;
+            var b = 0.5 + Math.random() * 0.5;
+            colors[i3] = b * 0.7;
+            colors[i3 + 1] = b * 0.8;
             colors[i3 + 2] = b;
         }
 
@@ -198,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: true,
-            opacity: 0.75
+            opacity: 0.7
         });
 
         starField = new THREE.Points(geo, mat);
@@ -206,36 +192,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function buildDustLanes() {
-        var count = 4000;
+        var count = 3000;
         var positions = new Float32Array(count * 3);
         var colors = new Float32Array(count * 3);
-        var arms = 4;
-        var radius = 440;
+        var arms = 3;
+        var radius = 400;
 
-        var cDust1 = new THREE.Color(0x3a1a4e);
-        var cDust2 = new THREE.Color(0x1a2a5e);
-        var cDust3 = new THREE.Color(0x2a1a3e);
+        var cDust1 = new THREE.Color(0x2a1a3e);
+        var cDust2 = new THREE.Color(0x1a2a4e);
 
         for (var i = 0; i < count; i++) {
             var i3 = i * 3;
-            var r = Math.pow(Math.random(), 0.6) * radius + 15;
-            var armIdx = i % arms;
-            var arm = (armIdx / arms) * Math.PI * 2;
-            var spin = r * 0.025;
-            var a = arm + spin + 0.35;
-            var spread = (Math.random() - 0.5) * 50 * (r / radius + 0.3);
-            var y = (Math.random() - 0.5) * 10;
+            var r = Math.pow(Math.random(), 0.7) * radius + 20;
+            var arm = (i % arms) / arms * Math.PI * 2;
+            var spin = r * 0.018;
+            var a = arm + spin + 0.3;
+            var spread = (Math.random() - 0.5) * 60 * (r / radius + 0.3);
+            var y = (Math.random() - 0.5) * 12;
 
-            positions[i3] = Math.cos(a) * r + spread * Math.cos(a + 1.5708);
+            positions[i3] = Math.cos(a) * r + spread;
             positions[i3 + 1] = y;
-            positions[i3 + 2] = Math.sin(a) * r + spread * Math.sin(a + 1.5708);
+            positions[i3 + 2] = Math.sin(a) * r + spread;
 
-            var col;
-            if (Math.random() < 0.5) {
-                col = cDust1.clone().lerp(cDust2, Math.random());
-            } else {
-                col = cDust2.clone().lerp(cDust3, Math.random());
-            }
+            var col = cDust1.clone().lerp(cDust2, Math.random());
             colors[i3] = col.r;
             colors[i3 + 1] = col.g;
             colors[i3 + 2] = col.b;
@@ -246,17 +225,17 @@ document.addEventListener('DOMContentLoaded', function () {
         geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         var mat = new THREE.PointsMaterial({
-            size: 12,
+            size: 10,
             vertexColors: true,
             transparent: true,
-            opacity: 0.12,
+            opacity: 0.15,
             blending: THREE.NormalBlending,
             depthWrite: false,
             sizeAttenuation: true
         });
 
         dust = new THREE.Points(geo, mat);
-        dust.rotation.x = 0.5;
+        dust.rotation.x = 0.45;
         scene.add(dust);
     }
 
@@ -277,18 +256,18 @@ document.addEventListener('DOMContentLoaded', function () {
         var t = clock.getElapsedTime();
 
         if (!reducedMotion) {
-            galaxy.rotation.y += 0.0012;
-            dust.rotation.y += 0.0012;
-            starField.rotation.y += 0.0002;
+            galaxy.rotation.y += 0.0015;
+            dust.rotation.y += 0.0015;
+            starField.rotation.y += 0.0003;
 
-            galaxy.rotation.x = 0.5 + mouseY * 0.12;
-            dust.rotation.x = 0.5 + mouseY * 0.12;
+            galaxy.rotation.x = 0.45 + mouseY * 0.15;
+            dust.rotation.x = 0.45 + mouseY * 0.15;
 
-            camera.position.x += (mouseX * 60 - camera.position.x) * 0.025;
-            camera.position.y += (180 - mouseY * 40 - camera.position.y) * 0.025;
+            camera.position.x += (mouseX * 80 - camera.position.x) * 0.03;
+            camera.position.y += (150 - mouseY * 60 - camera.position.y) * 0.03;
             camera.lookAt(0, 0, 0);
 
-            var pulse = 1 + Math.sin(t * 1.5) * 0.08;
+            var pulse = 1 + Math.sin(t * 1.2) * 0.06;
             core.scale.setScalar(pulse);
         }
 
