@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 copied_button: "Copied!",
                 rial_button: "Donate",
                 rial_popular: "Popular",
+                qr_scan: "Scan to get address",
+                qr_button: "QR",
                 footer_thanks: "Thank you for your support❤️"
             },
             fa: {
@@ -47,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 copied_button: "کپی شد!",
                 rial_button: "پرداخت",
                 rial_popular: "محبوب",
+                qr_scan: "آدرس را اسکن کنید",
+                qr_button: "QR",
                 footer_thanks: "از حمایت شما سپاسگزارم❤️"
             }
         },
@@ -81,9 +85,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.textContent = langPack.copy_button;
         });
+        document.querySelectorAll('.qr-btn').forEach(btn => {
+            btn.textContent = langPack.qr_button;
+        });
         document.querySelectorAll('.rial-btn').forEach(btn => {
             btn.textContent = langPack.rial_button;
         });
+
+        if (dom.qrModal) {
+            const qrTitle = dom.qrModal.querySelector('.qr-title');
+            if (qrTitle) qrTitle.textContent = langPack.qr_scan;
+        }
 
         document.documentElement.lang = lang;
         document.documentElement.dir = (lang === 'fa') ? 'rtl' : 'ltr';
@@ -120,7 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="address-bar">
                     <span class="address-text">${wallet.address}</span>
-                    <button class="copy-btn" data-address="${wallet.address}" data-lang-key="copy_button"></button>
+                    <div class="address-actions">
+                        <button class="qr-btn" data-address="${wallet.address}" data-lang-key="qr_button" aria-label="QR"></button>
+                        <button class="copy-btn" data-address="${wallet.address}" data-lang-key="copy_button"></button>
+                    </div>
                 </div>`;
             dom.walletContainer.appendChild(card);
         });
@@ -148,7 +163,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function showQR(address) {
+        if (!dom.qrModal || !dom.qrCanvas) return;
+        if (typeof QRious === 'undefined') return;
+        dom.qrCanvas.width = 220;
+        dom.qrCanvas.height = 220;
+        new QRious({
+            element: dom.qrCanvas,
+            value: address,
+            size: 220,
+            background: '#ffffff',
+            foreground: '#0a0c14',
+            level: 'M'
+        });
+        if (dom.qrAddressText) dom.qrAddressText.textContent = address;
+        dom.qrModal.classList.add('active');
+        dom.qrModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideQR() {
+        if (!dom.qrModal) return;
+        dom.qrModal.classList.remove('active');
+        dom.qrModal.setAttribute('aria-hidden', 'true');
+    }
+
     function switchTab(tab) {
+        const validTabs = ['crypto', 'rial'];
+        if (!validTabs.includes(tab)) tab = 'crypto';
+
         const tabs = document.querySelectorAll('.tab-btn');
         const panels = document.querySelectorAll('.tab-panel');
 
@@ -164,43 +206,63 @@ document.addEventListener('DOMContentLoaded', () => {
         safeLocalStorage('set', 'donate_tab', tab);
     }
 
+    function copyToClipboard(address, button, langPack) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(address).then(() => {
+                button.textContent = langPack.copied_button;
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.textContent = langPack.copy_button;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                fallbackCopy(address, button, langPack);
+            });
+        } else {
+            fallbackCopy(address, button, langPack);
+        }
+    }
+
+    function fallbackCopy(address, button, langPack) {
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = address;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            button.textContent = langPack.copied_button;
+            button.classList.add('copied');
+            setTimeout(() => {
+                button.textContent = langPack.copy_button;
+                button.classList.remove('copied');
+            }, 2000);
+        } catch (_) {
+            button.textContent = 'Error';
+            setTimeout(() => {
+                button.textContent = langPack.copy_button;
+            }, 2000);
+        }
+    }
+
     function setupEventListeners() {
         if (dom.walletContainer) {
             dom.walletContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('copy-btn')) {
-                    const button = e.target;
-                    const address = button.dataset.address;
+                const copyBtn = e.target.closest('.copy-btn');
+                const qrBtn = e.target.closest('.qr-btn');
+
+                if (copyBtn) {
+                    const address = copyBtn.dataset.address;
                     const currentLang = document.documentElement.lang;
                     const langPack = config.translations[currentLang] || config.translations.en;
+                    copyToClipboard(address, copyBtn, langPack);
+                }
 
-                    navigator.clipboard.writeText(address).then(() => {
-                        button.textContent = langPack.copied_button;
-                        button.classList.add('copied');
-                        setTimeout(() => {
-                            button.textContent = langPack.copy_button;
-                            button.classList.remove('copied');
-                        }, 2000);
-                    }).catch(() => {
-                        try {
-                            const ta = document.createElement('textarea');
-                            ta.value = address;
-                            ta.style.position = 'fixed';
-                            ta.style.left = '-9999px';
-                            document.body.appendChild(ta);
-                            ta.select();
-                            document.execCommand('copy');
-                            document.body.removeChild(ta);
-                            button.textContent = langPack.copied_button;
-                            setTimeout(() => {
-                                button.textContent = langPack.copy_button;
-                            }, 2000);
-                        } catch (_) {
-                            button.textContent = 'Error';
-                            setTimeout(() => {
-                                button.textContent = langPack.copy_button;
-                            }, 2000);
-                        }
-                    });
+                if (qrBtn) {
+                    const address = qrBtn.dataset.address;
+                    showQR(address);
                 }
             });
         }
@@ -226,6 +288,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+
+        if (dom.qrModal) {
+            const closeBtn = dom.qrModal.querySelector('.qr-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', hideQR);
+            }
+            dom.qrModal.addEventListener('click', (e) => {
+                if (e.target === dom.qrModal) hideQR();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && dom.qrModal && dom.qrModal.classList.contains('active')) {
+                hideQR();
+            }
+        });
     }
 
     function init() {
@@ -234,6 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.langSwitcher = document.getElementById('lang-switcher');
         dom.transitionOverlay = document.getElementById('transition-overlay');
         dom.tabContainer = document.getElementById('tab-container');
+        dom.qrModal = document.getElementById('qr-modal');
+        dom.qrCanvas = document.getElementById('qr-canvas');
+        dom.qrAddressText = document.getElementById('qr-address-text');
 
         if (!dom.walletContainer || !dom.rialContainer || !dom.langSwitcher || !dom.transitionOverlay) {
             console.error("Critical elements are missing from the page. Initialization failed.");
