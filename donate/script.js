@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const dom = {};
+    const animatedElements = new WeakSet();
 
     function safeLocalStorage(action, key, value) {
         try {
@@ -75,7 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const key = el.getAttribute('data-lang-key');
                 if (langPack[key]) {
                     if (el.classList.contains('copy-btn')) return;
-                    el.textContent = langPack[key];
+                    if (el.classList.contains('rial-btn')) return;
+
+                    const wasAnimated = animatedElements.has(el);
+
+                    if (wasAnimated) {
+                        el.removeAttribute('data-split');
+                        el.textContent = langPack[key];
+                    } else {
+                        el.textContent = langPack[key];
+                    }
                 }
             });
         }
@@ -97,11 +107,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         safeLocalStorage('set', 'user_lang', lang);
+
+        reSplitAnimatedTexts(lang);
+    }
+
+    function reSplitAnimatedTexts(lang) {
+        const h1 = document.querySelector('header h1');
+        const subtitle = document.querySelector('header p');
+        if (h1) splitTextToLetters(h1);
+        if (subtitle) splitTextToWords(subtitle);
     }
 
     function performLanguageTransition(newLang) {
-        if (!dom.transitionOverlay) return;
+        if (!dom.transitionOverlay) {
+            setLanguage(newLang);
+            return;
+        }
+
         dom.transitionOverlay.classList.add('active');
+
         setTimeout(() => {
             setLanguage(newLang);
             dom.transitionOverlay.classList.remove('active');
@@ -310,14 +334,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function splitTextToLetters(el) {
         var text = el.textContent;
         el.textContent = '';
-        var letters = text.split('');
-        letters.forEach(function (ch, i) {
-            var span = document.createElement('span');
-            span.className = 'letter';
-            span.textContent = ch === ' ' ? '\u00a0' : ch;
-            span.style.animationDelay = (0.6 + i * 0.04) + 's';
-            el.appendChild(span);
+        var words = text.split(' ');
+        var letterIdx = 0;
+        words.forEach(function (word, wi) {
+            var wordSpan = document.createElement('span');
+            wordSpan.className = 'word-wrap';
+            var letters = word.split('');
+            letters.forEach(function (ch) {
+                var span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = ch;
+                span.style.animationDelay = (0.6 + letterIdx * 0.04) + 's';
+                wordSpan.appendChild(span);
+                letterIdx++;
+            });
+            el.appendChild(wordSpan);
+            if (wi < words.length - 1) {
+                el.appendChild(document.createTextNode(' '));
+            }
         });
+        animatedElements.add(el);
     }
 
     function splitTextToWords(el) {
@@ -335,6 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.appendChild(document.createTextNode(' '));
             }
         });
+        animatedElements.add(el);
     }
 
     function setup3DTilt() {
@@ -405,13 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const browserLang = navigator.language.split('-')[0];
         const initialLang = safeLocalStorage('get', 'user_lang') || ((browserLang === 'fa') ? 'fa' : 'en');
 
-        var h1 = document.querySelector('header h1');
-        var subtitle = document.querySelector('header p');
-
         setLanguage(initialLang);
-
-        if (h1) splitTextToLetters(h1);
-        if (subtitle) splitTextToWords(subtitle);
 
         const savedTab = safeLocalStorage('get', 'donate_tab') || 'crypto';
         switchTab(savedTab);
@@ -422,6 +453,25 @@ document.addEventListener('DOMContentLoaded', () => {
         setupParallax();
 
         document.body.classList.add('loaded');
+
+        var intro = document.getElementById('intro-overlay');
+        var introText = document.getElementById('intro-text');
+        if (intro && introText) {
+            var introChars = '▮▮▮▮▮▮▮▮';
+            var chars = introChars.split('');
+            var idx = 0;
+            var introTimer = setInterval(function () {
+                if (idx <= chars.length) {
+                    introText.textContent = chars.slice(0, idx).join('') + ' INIT';
+                    idx++;
+                } else {
+                    clearInterval(introTimer);
+                }
+            }, 120);
+            setTimeout(function () {
+                intro.classList.add('hidden');
+            }, 2000);
+        }
     }
 
     init();

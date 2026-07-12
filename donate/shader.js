@@ -39,11 +39,11 @@
         'uniform vec2 u_resolution;',
         'uniform vec2 u_mouse;',
         'uniform float u_scroll;',
-
+        '',
         'vec3 hash3(float n) {',
         '    return fract(sin(vec3(n, n + 1.0, n + 2.0)) * vec3(43758.5453, 22578.1459, 19642.3137));',
         '}',
-
+        '',
         'float noise(vec2 p) {',
         '    vec2 i = floor(p);',
         '    vec2 f = fract(p);',
@@ -56,7 +56,7 @@
         '        u.y);',
         '    return a * 0.5 + 0.5;',
         '}',
-
+        '',
         'float fbm(vec2 p) {',
         '    float v = 0.0;',
         '    float a = 0.5;',
@@ -68,49 +68,66 @@
         '    }',
         '    return v;',
         '}',
-
+        '',
         'void main() {',
         '    vec2 uv = gl_FragCoord.xy / u_resolution.xy;',
         '    vec2 p = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);',
-
-        '    float t = u_time * 0.08;',
+        '',
+        '    float t = u_time * 0.06;',
         '    float s = u_scroll * 2.0;',
-
+        '',
         '    vec2 q;',
-        '    q.x = fbm(p * 1.5 + vec2(t, s * 0.3));',
-        '    q.y = fbm(p * 1.5 + vec2(-t * 0.7, s * 0.2) + 5.2);',
-
+        '    q.x = fbm(p * 1.3 + vec2(t, s * 0.3));',
+        '    q.y = fbm(p * 1.3 + vec2(-t * 0.7, s * 0.2) + 5.2);',
+        '',
         '    vec2 r;',
-        '    r.x = fbm(p * 2.0 + q + vec2(1.7, 9.2) + t * 0.5);',
-        '    r.y = fbm(p * 2.0 + q + vec2(8.3, 2.8) + t * 0.4);',
-
-        '    float f = fbm(p * 3.0 + r * 1.5);',
-
+        '    r.x = fbm(p * 1.8 + q + vec2(1.7, 9.2) + t * 0.5);',
+        '    r.y = fbm(p * 1.8 + q + vec2(8.3, 2.8) + t * 0.4);',
+        '',
+        '    float f = fbm(p * 2.5 + r * 1.5);',
+        '',
         '    vec2 m = u_mouse - 0.5;',
         '    float md = length(p - m * 1.5);',
-        '    f += smoothstep(0.8, 0.0, md) * 0.1;',
-
-        '    vec3 c1 = vec3(0.03, 0.04, 0.09);',
-        '    vec3 c2 = vec3(0.08, 0.05, 0.18);',
-        '    vec3 c3 = vec3(0.35, 0.18, 0.55);',
-        '    vec3 c4 = vec3(0.65, 0.37, 0.91);',
-        '    vec3 c5 = vec3(0.15, 0.78, 0.62);',
-        '    vec3 c6 = vec3(0.95, 0.42, 0.28);',
-
+        '    float mouseGlow = smoothstep(0.6, 0.0, md) * 0.12;',
+        '    f += mouseGlow;',
+        '',
+        '    vec3 c1 = vec3(0.015, 0.03, 0.08);',
+        '    vec3 c2 = vec3(0.04, 0.07, 0.16);',
+        '    vec3 c3 = vec3(0.13, 0.2, 0.35);',
+        '    vec3 c4 = vec3(0.35, 0.5, 0.75);',
+        '    vec3 c5 = vec3(0.51, 0.63, 0.77);',
+        '    vec3 c6 = vec3(0.8, 0.86, 0.95);',
+        '',
         '    vec3 col = c1;',
         '    col = mix(col, c2, smoothstep(0.2, 0.55, f));',
         '    col = mix(col, c3, smoothstep(0.3, 0.7, f * f));',
         '    col = mix(col, c4, smoothstep(0.5, 0.9, f * r.x));',
         '    col = mix(col, c5, smoothstep(0.4, 0.65, r.y * 0.5));',
-        '    col = mix(col, c6, smoothstep(0.55, 0.75, length(r) * 0.6) * 0.5);',
-
-        '    float vig = 1.0 - smoothstep(0.5, 1.4, length(p) * 0.8);',
-        '    col *= vig * 0.85 + 0.15;',
-
-        '    col += (fbm(p * 8.0 + t) - 0.5) * 0.03;',
-
-        '    col = pow(col, vec3(0.85));',
-
+        '    col = mix(col, c6, smoothstep(0.6, 0.8, length(r) * 0.6) * 0.4);',
+        '',
+        '    float ca = 0.015;',
+        '    vec2 caUv = uv - 0.5;',
+        '    float dist = length(caUv);',
+        '    float caR = fbm(p * 2.5 + r * 1.5 + vec2(ca, 0.0));',
+        '    float caG = fbm(p * 2.5 + r * 1.5);',
+        '    float caB = fbm(p * 2.5 + r * 1.5 + vec2(-ca, 0.0));',
+        '',
+        '    vec3 caCol;',
+        '    caCol.r = mix(c1.r, c6.r, smoothstep(0.2, 0.8, caR));',
+        '    caCol.g = mix(c1.g, c6.g, smoothstep(0.2, 0.8, caG));',
+        '    caCol.b = mix(c1.b, c6.b, smoothstep(0.2, 0.8, caB));',
+        '',
+        '    col = mix(col, caCol, 0.3);',
+        '',
+        '    float vig = 1.0 - smoothstep(0.4, 1.3, length(p) * 0.9);',
+        '    col *= vig * 0.8 + 0.2;',
+        '',
+        '    col += (fbm(p * 10.0 + t) - 0.5) * 0.015;',
+        '',
+        '    col += mouseGlow * vec3(0.13, 0.16, 0.22) * 2.0;',
+        '',
+        '    col = pow(col, vec3(0.88));',
+        '',
         '    gl_FragColor = vec4(col, 1.0);',
         '}'
     ].join('\n');
@@ -175,8 +192,8 @@
 
         if (!reducedMotion) {
             time += dt;
-            mouse.x += (mouse.tx - mouse.x) * 0.05;
-            mouse.y += (mouse.ty - mouse.y) * 0.05;
+            mouse.x += (mouse.tx - mouse.x) * 0.04;
+            mouse.y += (mouse.ty - mouse.y) * 0.04;
         }
 
         gl.uniform1f(uTime, time);
