@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 main_title: "Support My Work",
                 main_subtitle: "Your contribution empowers me to create more and better content. Every amount is valuable.",
                 tab_crypto: "Crypto",
-                tab_rial: "Rial (تومان)",
+                tab_rial: "Rial (Toman)",
                 tab_crypto_desc: "USDT, TRX, ETH, SOL & more",
                 tab_rial_desc: "Pay in Iranian Rial",
                 copy_button: "Copy",
@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (action === 'get') return localStorage.getItem(key);
             if (action === 'set') localStorage.setItem(key, value);
         } catch (_) {
-            /* storage unavailable: private mode, quota, etc — silently degrade */
         }
         return null;
     }
