@@ -307,6 +307,84 @@ document.addEventListener('DOMContentLoaded', () => {
         if (overlay) overlay.classList.remove('active');
     }
 
+    function splitTextToLetters(el) {
+        var text = el.textContent;
+        el.textContent = '';
+        var letters = text.split('');
+        letters.forEach(function (ch, i) {
+            var span = document.createElement('span');
+            span.className = 'letter';
+            span.textContent = ch === ' ' ? '\u00a0' : ch;
+            span.style.animationDelay = (0.6 + i * 0.04) + 's';
+            el.appendChild(span);
+        });
+    }
+
+    function splitTextToWords(el) {
+        var text = el.textContent;
+        var words = text.split(' ');
+        el.textContent = '';
+        var baseDelay = 1.0;
+        words.forEach(function (w, i) {
+            var span = document.createElement('span');
+            span.className = 'word';
+            span.textContent = w;
+            span.style.animationDelay = (baseDelay + i * 0.06) + 's';
+            el.appendChild(span);
+            if (i < words.length - 1) {
+                el.appendChild(document.createTextNode(' '));
+            }
+        });
+    }
+
+    function setup3DTilt() {
+        var cards = document.querySelectorAll('.wallet-card, .rial-card');
+        cards.forEach(function (card) {
+            card.addEventListener('mousemove', function (e) {
+                var rect = card.getBoundingClientRect();
+                var x = (e.clientX - rect.left) / rect.width - 0.5;
+                var y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = 'perspective(800px) rotateX(' + (-y * 8) + 'deg) rotateY(' + (x * 8) + 'deg) translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', function () {
+                card.style.transform = '';
+            });
+        });
+    }
+
+    function setupScrollReveal() {
+        if (!('IntersectionObserver' in window)) return;
+        var els = document.querySelectorAll('[data-reveal]');
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        els.forEach(function (el) { obs.observe(el); });
+    }
+
+    function setupParallax() {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var parallaxEls = document.querySelectorAll('[data-parallax]');
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                requestAnimationFrame(function () {
+                    var sy = window.scrollY;
+                    parallaxEls.forEach(function (el) {
+                        var speed = parseFloat(el.dataset.parallax) || 0.3;
+                        el.style.transform = 'translateY(' + (sy * speed) + 'px)';
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
     function init() {
         dom.walletContainer = document.getElementById('wallet-container');
         dom.rialContainer = document.getElementById('rial-container');
@@ -327,12 +405,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const browserLang = navigator.language.split('-')[0];
         const initialLang = safeLocalStorage('get', 'user_lang') || ((browserLang === 'fa') ? 'fa' : 'en');
 
+        var h1 = document.querySelector('header h1');
+        var subtitle = document.querySelector('header p');
+
         setLanguage(initialLang);
+
+        if (h1) splitTextToLetters(h1);
+        if (subtitle) splitTextToWords(subtitle);
 
         const savedTab = safeLocalStorage('get', 'donate_tab') || 'crypto';
         switchTab(savedTab);
 
         setupEventListeners();
+        setup3DTilt();
+        setupScrollReveal();
+        setupParallax();
 
         document.body.classList.add('loaded');
     }

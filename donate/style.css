@@ -28,7 +28,7 @@
     padding: 0;
 }
 
-#galaxy-bg {
+#shader-bg {
     position: fixed;
     top: 0;
     left: 0;
@@ -89,6 +89,22 @@ body.lang-en {
     text-align: center;
     position: relative;
     z-index: 1;
+    will-change: transform;
+}
+
+[data-parallax] {
+    will-change: transform;
+}
+
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* ─── Language Switcher ─── */
@@ -161,24 +177,39 @@ header {
 }
 
 header h1 {
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 2.4rem;
+    font-weight: 700;
     margin-bottom: 0.4rem;
     background: linear-gradient(90deg, #f0f0f0, #a374ff, #f0f0f0, #c4a0ff, #f0f0f0);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: textShimmer 6s linear infinite, fadeInDown 0.7s 0.3s ease-out backwards;
+    animation: textShimmer 6s linear infinite;
+    letter-spacing: -0.02em;
+}
+
+header h1 .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px) rotateX(-90deg);
+    animation: letterReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 header p {
     color: var(--text-secondary);
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     max-width: 88%;
     margin: 0 auto;
     line-height: 1.7;
     animation: fadeInDown 0.7s 0.5s ease-out backwards;
+}
+
+header p .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: wordReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ─── Tab Navigation ─── */
@@ -278,11 +309,12 @@ header p {
     display: flex;
     flex-direction: column;
     text-align: start;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.15s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
     animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     opacity: 0;
     transform-style: preserve-3d;
-    perspective: 600px;
+    perspective: 800px;
+    will-change: transform;
 }
 
 .wallet-card:hover {
@@ -393,9 +425,12 @@ body.lang-fa .copy-btn {
     display: flex;
     flex-direction: column;
     text-align: start;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.15s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
     animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     opacity: 0;
+    transform-style: preserve-3d;
+    perspective: 800px;
+    will-change: transform;
 }
 
 .rial-card:hover {
@@ -577,6 +612,16 @@ footer {
     0%   { opacity: 0; transform: scale(0.3) rotate(-180deg); filter: blur(8px); }
     50%  { opacity: 0.7; }
     100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
+}
+
+@keyframes letterReveal {
+    0%   { opacity: 0; transform: translateY(40px) rotateX(-90deg); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0deg); }
+}
+
+@keyframes wordReveal {
+    0%   { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes featuredGlow {

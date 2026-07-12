@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
-    <canvas id="galaxy-bg"></canvas>
+    <canvas id="shader-bg"></canvas>
     <div id="transition-overlay"></div>
 
     <div class="container">
@@ -30,7 +30,7 @@
             <p data-lang-key="main_subtitle">کمک شما به من انگیزه می‌دهد تا محتوای بهتر و بیشتری تولید کنم، هر مبلغی برای من ارزشمند است.</p>
         </header>
 
-        <nav id="tab-container" class="tab-nav">
+        <nav id="tab-container" class="tab-nav" data-reveal>
             <button class="tab-btn active" data-tab="crypto">
                 <span class="tab-icon tab-icon-crypto">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -60,7 +60,7 @@
             <main id="rial-container"></main>
         </section>
 
-        <footer>
+        <footer data-reveal>
             <div class="social-links">
                 <a href="https://github.com/monsmain" target="_blank" aria-label="GitHub" rel="noopener">
                     <img src="images/github.png" alt="GitHub">
@@ -88,9 +88,8 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="galaxy.js?v=7"></script>
-    <script src="script.js?v=7"></script>
+    <script src="shader.js?v=8"></script>
+    <script src="script.js?v=8"></script>
 </body>
 </html>
