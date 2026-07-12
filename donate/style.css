@@ -94,15 +94,21 @@ body.lang-en {
 
 /* ─── Language Switcher ─── */
 
-body.lang-fa .lang-switcher {
+body.lang-en .lang-switcher {
+    position: absolute;
+    top: -8px;
     right: auto;
     left: 0;
 }
 
-.lang-switcher {
+body.lang-fa .lang-switcher {
     position: absolute;
     top: -8px;
+    left: auto;
     right: 0;
+}
+
+.lang-switcher {
     display: flex;
     align-items: center;
     gap: 6px;
