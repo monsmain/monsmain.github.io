@@ -28,10 +28,14 @@
 
     <div class="container">
         <header>
-            <div id="lang-switcher" class="lang-switcher">
-                <button data-lang="en">EN</button>
-                <span class="lang-separator">/</span>
-                <button data-lang="fa" class="active">FA</button>
+            <div id="lang-switcher" class="lang-switcher" role="switch" aria-label="Language toggle">
+                <img class="lang-flag lang-flag-en" src="https://raw.githubusercontent.com/monsmain/ighack/main/images/flag-en.png" alt="EN">
+                <span class="lang-label lang-label-en">EN</span>
+                <div class="lang-toggle-track">
+                    <button class="lang-toggle-thumb" data-lang="fa" aria-label="FA"></button>
+                </div>
+                <span class="lang-label lang-label-fa">FA</span>
+                <img class="lang-flag lang-flag-fa" src="https://raw.githubusercontent.com/monsmain/ighack/main/images/Flag-iran.png" alt="FA">
             </div>
             <img src="images/Logo.png" alt="Logo" class="main-logo">
             <h1 data-lang-key="main_title">حمایت از فعالیت من</h1>

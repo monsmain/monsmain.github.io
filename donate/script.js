@@ -269,13 +269,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (dom.langSwitcher) {
             dom.langSwitcher.addEventListener('click', (e) => {
-                const langButton = e.target.closest('[data-lang]');
-                if (langButton) {
-                    const newLang = langButton.dataset.lang;
-                    if (newLang !== document.documentElement.lang) {
-                        performLanguageTransition(newLang);
-                    }
-                }
+                const currentLang = document.documentElement.lang;
+                const newLang = currentLang === 'fa' ? 'en' : 'fa';
+                performLanguageTransition(newLang);
             });
         }
 
