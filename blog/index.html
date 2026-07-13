@@ -36,19 +36,28 @@
 <body>
     <canvas id="bg-canvas"></canvas>
     <div id="transition-overlay"></div>
+    <div class="menu-overlay" id="menu-overlay"></div>
 
     <nav class="nav" id="navbar">
         <a href="../" class="nav-logo">monsmain<span>_</span></a>
-        <ul class="nav-links">
-            <li><a href="../#about" class="nav-link" data-i18n="nav.about">درباره من</a></li>
-            <li><a href="../#projects" class="nav-link" data-i18n="nav.projects">پروژه‌ها</a></li>
-            <li><a href="../#skills" class="nav-link" data-i18n="nav.skills">مهارت‌ها</a></li>
-            <li><a href="#" class="nav-link active" data-i18n="nav.blog">بلاگ</a></li>
-            <li><a href="../donate/" class="nav-link essential" data-i18n="nav.donate">حمایت</a></li>
-        </ul>
-        <div id="lang-switcher" class="lang-switcher" role="switch" aria-label="Language">
-            <span class="lang-dot"></span>
-            <span id="lang-text">EN / FA</span>
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="menu-panel" id="menu-panel">
+            <ul class="menu-links">
+                <li><a href="../#about" class="nav-link" data-i18n="nav.about">درباره من</a></li>
+                <li><a href="../#projects" class="nav-link" data-i18n="nav.projects">پروژه‌ها</a></li>
+                <li><a href="../#skills" class="nav-link" data-i18n="nav.skills">مهارت‌ها</a></li>
+                <li><a href="#" class="nav-link active" data-i18n="nav.blog">بلاگ</a></li>
+                <li><a href="../donate/" class="nav-link essential" data-i18n="nav.donate">حمایت</a></li>
+            </ul>
+            <div id="lang-switcher" class="lang-switcher" role="switch" aria-label="Language">
+                <button class="lang-btn" data-lang="fa">FA</button>
+                <span class="lang-sep">/</span>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
         </div>
     </nav>
 
@@ -56,7 +65,7 @@
         <div style="height:5rem"></div>
 
         <section>
-            <a href="../" class="nav-back">← <span>Back to Home</span></a>
+            <a href="../" class="nav-back">← <span data-i18n="blog.back_home">Back to Home</span></a>
             <div class="section-header">
                 <p class="section-subtitle" data-i18n="blog.subtitle">افکار و آموزش‌ها</p>
                 <h2 class="section-title" data-i18n="blog.title">بلاگ</h2>
@@ -76,16 +85,22 @@
     <script type="module" src="../assets/js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const updateLangText = () => {
-                const lt = document.getElementById('lang-text');
-                const isFa = document.documentElement.lang === 'fa';
-                lt.textContent = isFa ? 'EN' : 'FA';
+            const hamburger = document.getElementById('hamburger');
+            const panel = document.getElementById('menu-panel');
+            const overlay = document.getElementById('menu-overlay');
+            const toggle = () => {
+                hamburger.classList.toggle('open');
+                panel.classList.toggle('open');
+                overlay.classList.toggle('open');
+                hamburger.setAttribute('aria-expanded', hamburger.classList.contains('open'));
             };
-            document.addEventListener('langchange', updateLangText);
-            const observer = new MutationObserver(() => {
-                if (document.body.classList.contains('loaded')) { updateLangText(); observer.disconnect(); }
+            hamburger.addEventListener('click', toggle);
+            overlay.addEventListener('click', toggle);
+            panel.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (hamburger.classList.contains('open')) toggle();
+                });
             });
-            observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
         });
     </script>
 </body>

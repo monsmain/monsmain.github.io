@@ -20,6 +20,7 @@
 <body>
     <canvas id="bg-canvas"></canvas>
     <div id="transition-overlay"></div>
+    <div class="menu-overlay" id="menu-overlay"></div>
 
     <nav class="nav" id="navbar">
         <a href="#" class="nav-logo">monsmain<span>_</span></a>
@@ -208,16 +209,22 @@
     <script type="module" src="assets/js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const updateLangText = () => {
-                const lt = document.getElementById('lang-text');
-                const isFa = document.documentElement.lang === 'fa';
-                lt.textContent = isFa ? 'EN' : 'FA';
+            const hamburger = document.getElementById('hamburger');
+            const panel = document.getElementById('menu-panel');
+            const overlay = document.getElementById('menu-overlay');
+            const toggle = () => {
+                hamburger.classList.toggle('open');
+                panel.classList.toggle('open');
+                overlay.classList.toggle('open');
+                hamburger.setAttribute('aria-expanded', hamburger.classList.contains('open'));
             };
-            document.addEventListener('langchange', updateLangText);
-            const observer = new MutationObserver(() => {
-                if (document.body.classList.contains('loaded')) { updateLangText(); observer.disconnect(); }
+            hamburger.addEventListener('click', toggle);
+            overlay.addEventListener('click', toggle);
+            panel.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (hamburger.classList.contains('open')) toggle();
+                });
             });
-            observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
         });
     </script>
 </body>

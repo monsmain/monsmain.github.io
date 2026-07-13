@@ -100,7 +100,8 @@
     "read_more": "Read More",
     "no_posts": "No posts yet. Check back soon!",
     "coming_soon": "Coming Soon",
-    "coming_soon_desc": "I'm working on some exciting articles about security tools, Go, and ethical hacking. Stay tuned!"
+    "coming_soon_desc": "I'm working on some exciting articles about security tools, Go, and ethical hacking. Stay tuned!",
+    "back_home": "Back to Home"
   },
   "donate": {
     "page_title": "Financial Support",
