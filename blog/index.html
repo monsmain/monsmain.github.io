@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="monsmain Blog — Thoughts, tutorials, and creative coding explorations">
+    <meta name="theme-color" content="#05070f">
+    <title>Blog — monsmain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
+        }
+    }
+    </script>
+    <style>
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        .blog-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: transform var(--transition), box-shadow 0.3s, border-color 0.3s; position: relative; overflow: hidden; }
+        .blog-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-2), transparent); background-size: 200% 100%; animation: tabShine 4s linear infinite; opacity: 0; transition: opacity 0.3s; }
+        .blog-card:hover::before { opacity: 1; }
+        .blog-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(99,102,241,0.15); border-color: var(--border-glow); }
+        .blog-tag { display: inline-block; font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent-2); padding: 3px 10px; border-radius: 20px; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2); margin-bottom: 1rem; }
+        .blog-title { font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .blog-excerpt { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; }
+        .blog-date { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); }
+        .featured-post { grid-column: 1 / -1; }
+        .coming-soon { text-align: center; padding: 4rem 2rem; }
+        .coming-soon-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .nav-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; margin-bottom: 2rem; transition: color 0.3s; }
+        .nav-back:hover { color: var(--accent-2); }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div id="transition-overlay"></div>
+
+    <nav class="nav" id="navbar">
+        <a href="../" class="nav-logo">monsmain<span>_</span></a>
+        <ul class="nav-links">
+            <li><a href="../#about" class="nav-link" data-i18n="nav.about">درباره من</a></li>
+            <li><a href="../#projects" class="nav-link" data-i18n="nav.projects">پروژه‌ها</a></li>
+            <li><a href="../#skills" class="nav-link" data-i18n="nav.skills">مهارت‌ها</a></li>
+            <li><a href="#" class="nav-link active" data-i18n="nav.blog">بلاگ</a></li>
+            <li><a href="../donate/" class="nav-link essential" data-i18n="nav.donate">حمایت</a></li>
+        </ul>
+        <div id="lang-switcher" class="lang-switcher" role="switch" aria-label="Language">
+            <span class="lang-dot"></span>
+            <span id="lang-text">EN / FA</span>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div style="height:5rem"></div>
+
+        <section>
+            <a href="../" class="nav-back">← <span>Back to Home</span></a>
+            <div class="section-header">
+                <p class="section-subtitle" data-i18n="blog.subtitle">افکار و آموزش‌ها</p>
+                <h2 class="section-title" data-i18n="blog.title">بلاگ</h2>
+            </div>
+
+            <div class="coming-soon reveal">
+                <div class="coming-soon-icon">✦</div>
+                <h3 class="blog-title" data-i18n="blog.coming_soon">به زودی</h3>
+                <p class="blog-excerpt" data-i18n="blog.coming_soon_desc">در حال نوشتن مقالاتی هستم.</p>
+            </div>
+        </section>
+    </div>
+
+    <button class="back-to-top" id="back-top" aria-label="Back to top">↑</button>
+
+    <script src="../assets/js/i18n.js"></script>
+    <script type="module" src="../assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const updateLangText = () => {
+                const lt = document.getElementById('lang-text');
+                const isFa = document.documentElement.lang === 'fa';
+                lt.textContent = isFa ? 'EN' : 'FA';
+            };
+            document.addEventListener('langchange', updateLangText);
+            const observer = new MutationObserver(() => {
+                if (document.body.classList.contains('loaded')) { updateLangText(); observer.disconnect(); }
+            });
+            observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        });
+    </script>
+</body>
+</html>

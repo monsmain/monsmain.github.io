@@ -1,96 +1,224 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Support monsmain — donate with cryptocurrency or Iranian Rial">
-    <meta name="theme-color" content="#0d0f18">
-    <meta property="og:title" content="monsmain — Financial Support">
-    <meta property="og:description" content="Your contribution empowers me to create more and better content.">
-    <meta property="og:type" content="website">
-    <title data-lang-key="page_title">حمایت مالی</title>
+    <meta name="description" data-i18n="meta.description">
+    <meta name="theme-color" content="#05070f">
+    <title data-i18n="meta.title">monsmain</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
+        }
+    }
+    </script>
 </head>
 <body>
-    <canvas id="galaxy-bg"></canvas>
+    <canvas id="bg-canvas"></canvas>
     <div id="transition-overlay"></div>
 
-    <div class="container">
-        <header>
-            <div id="lang-switcher" class="lang-switcher">
-                <button data-lang="en">EN</button>
-                <span class="lang-separator">/</span>
-                <button data-lang="fa" class="active">FA</button>
+    <nav class="nav" id="navbar">
+        <a href="#" class="nav-logo">monsmain<span>_</span></a>
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="menu-panel" id="menu-panel">
+            <ul class="menu-links">
+                <li><a href="#about" class="nav-link" data-i18n="nav.about">درباره من</a></li>
+                <li><a href="#projects" class="nav-link" data-i18n="nav.projects">پروژه‌ها</a></li>
+                <li><a href="#skills" class="nav-link" data-i18n="nav.skills">مهارت‌ها</a></li>
+                <li><a href="blog/" class="nav-link" data-i18n="nav.blog">بلاگ</a></li>
+                <li><a href="donate/" class="nav-link essential" data-i18n="nav.donate">حمایت</a></li>
+            </ul>
+            <div id="lang-switcher" class="lang-switcher" role="switch" aria-label="Language">
+                <button class="lang-btn" data-lang="fa">FA</button>
+                <span class="lang-sep">/</span>
+                <button class="lang-btn" data-lang="en">EN</button>
             </div>
-            <img src="images/Logo.png" alt="Logo" class="main-logo">
-            <h1 data-lang-key="main_title">حمایت از فعالیت من</h1>
-            <p data-lang-key="main_subtitle">کمک شما به من انگیزه می‌دهد تا محتوای بهتر و بیشتری تولید کنم، هر مبلغی برای من ارزشمند است.</p>
-        </header>
+        </div>
+    </nav>
 
-        <nav id="tab-container" class="tab-nav">
-            <button class="tab-btn active" data-tab="crypto">
-                <span class="tab-icon tab-icon-crypto">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9.5 7.5h3.8a2.3 2.3 0 0 1 0 4.6H9.5zm0 4.6h4.2a2.4 2.4 0 0 1 0 4.8H9.5zm0 0v3.4M8 7.5h1.5M8 16.5h1.5M11 18v1.5M11 4.5V6"/>
-                    </svg>
-                </span>
-                <span class="tab-label" data-lang-key="tab_crypto">ارز دیجیتال</span>
-                <span class="tab-desc" data-lang-key="tab_crypto_desc">USDT، ترون، اتریوم، سولانا و...</span>
-            </button>
-            <button class="tab-btn" data-tab="rial">
-                <span class="tab-icon tab-icon-rial">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2v20M7 5c2 1 3 2.5 3 5s-1 4-3 5c2 1 3 2.5 3 5M17 5c-2 1-3 2.5-3 5s1 4 3 5c-2 1-3 2.5-3 5M5 12h14"/>
-                    </svg>
-                </span>
-                <span class="tab-label" data-lang-key="tab_rial">ریالی (تومان)</span>
-                <span class="tab-desc" data-lang-key="tab_rial_desc">پرداخت به تومان</span>
-            </button>
-        </nav>
-
-        <section class="tab-panel active" data-panel="crypto">
-            <main id="wallet-container"></main>
+    <div class="main-wrapper">
+        <section class="hero" id="home">
+            <p class="hero-greeting" data-i18n="hero.greeting">سلام، من</p>
+            <h1 class="hero-name" data-i18n="hero.name">monsmain</h1>
+            <p class="hero-role" data-i18n="hero.role">توسعه‌دهنده نرم‌افزار و کدنویس خلاق</p>
+            <div class="hero-typed-wrap">
+                <span id="typed"></span>
+            </div>
+            <div class="hero-scroll" data-i18n="hero.scroll">برای کاوش اسکرول کنید</div>
         </section>
 
-        <section class="tab-panel" data-panel="rial">
-            <main id="rial-container"></main>
+        <section id="about" class="reveal">
+            <div class="section-header">
+                <p class="section-subtitle" data-i18n="about.subtitle">چه کسی هستم</p>
+                <h2 class="section-title" data-i18n="about.title">درباره من</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p data-i18n="about.p1">من یک توسعه‌دهنده نرم‌افزار هستم که روی ساختن تجربیات وب همه‌جانبه تمرکز دارم.</p>
+                    <p data-i18n="about.p2">من در JavaScript، Python و معماری cloud-native تخصص دارم.</p>
+                    <p data-i18n="about.p3">وقتی کد نمی‌نویسم، در حال کاوش framework های جدید هستم.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal" style="max-width:900px">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-number" data-target="13">0</div><div class="stat-label" data-i18n="stats.repos">مخزن گیت‌هاب</div></div>
+                <div class="stat-card"><div class="stat-number" data-target="1">0</div><div class="stat-label" data-i18n="stats.years">سال تجربه</div></div>
+                <div class="stat-card"><div class="stat-number" data-target="36">0</div><div class="stat-label" data-i18n="stats.stars">ستاره گیت‌هاب</div></div>
+                <div class="stat-card"><div class="stat-number" data-target="9999">0</div><div class="stat-label" data-i18n="stats.coffee">فنجان قهوه</div></div>
+            </div>
+        </section>
+
+        <section id="projects" class="reveal">
+            <div class="section-header">
+                <p class="section-subtitle" data-i18n="projects.subtitle">چیزهایی که ساختم</p>
+                <h2 class="section-title" data-i18n="projects.title">پروژه‌های منتخب</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <p class="project-number">01</p>
+                    <h3 class="project-title" data-i18n="projects.p1_title">uploader</h3>
+                    <p class="project-desc" data-i18n="projects.p1_desc">Cloud storage app</p>
+                    <div class="project-tags"><span class="project-tag">JavaScript</span><span class="project-tag">Cloudflare</span><span class="project-tag">Telegram Bot</span><span class="project-tag">R2</span></div>
+                    <div class="project-links"><a href="https://github.com/monsmain/uploader" class="project-link" target="_blank" rel="noopener">↗ <span data-i18n="projects.view">مشاهده</span></a></div>
+                </div>
+                <div class="project-card">
+                    <p class="project-number">02</p>
+                    <h3 class="project-title" data-i18n="projects.p2_title">ighack</h3>
+                    <p class="project-desc" data-i18n="projects.p2_desc">Instagram brute-force</p>
+                    <div class="project-tags"><span class="project-tag">Go</span><span class="project-tag">Brute Force</span><span class="project-tag">Tor</span><span class="project-tag">Proxy</span></div>
+                    <div class="project-links"><a href="https://github.com/monsmain/ighack" class="project-link" target="_blank" rel="noopener">↗ <span data-i18n="projects.view">مشاهده</span></a></div>
+                </div>
+                <div class="project-card">
+                    <p class="project-number">03</p>
+                    <h3 class="project-title" data-i18n="projects.p3_title">endpoint-scanner</h3>
+                    <p class="project-desc" data-i18n="projects.p3_desc">Port & endpoint scanner</p>
+                    <div class="project-tags"><span class="project-tag">Go</span><span class="project-tag">Network</span><span class="project-tag">Scanner</span></div>
+                    <div class="project-links"><a href="https://github.com/monsmain/endpoint-scanner" class="project-link" target="_blank" rel="noopener">↗ <span data-i18n="projects.view">مشاهده</span></a></div>
+                </div>
+                <div class="project-card">
+                    <p class="project-number">04</p>
+                    <h3 class="project-title" data-i18n="projects.p4_title">app-sms-irani</h3>
+                    <p class="project-desc" data-i18n="projects.p4_desc">SMS bomber</p>
+                    <div class="project-tags"><span class="project-tag">Android</span><span class="project-tag">Kotlin</span><span class="project-tag">Go</span><span class="project-tag">API</span></div>
+                    <div class="project-links"><a href="https://github.com/monsmain/app-sms-irani" class="project-link" target="_blank" rel="noopener">↗ <span data-i18n="projects.view">مشاهده</span></a></div>
+                </div>
+                <div class="project-card">
+                    <p class="project-number">05</p>
+                    <h3 class="project-title" data-i18n="projects.p5_title">User-Agents-Checker</h3>
+                    <p class="project-desc" data-i18n="projects.p5_desc">User agent checker</p>
+                    <div class="project-tags"><span class="project-tag">Go</span><span class="project-tag">Browser</span><span class="project-tag">Checker</span></div>
+                    <div class="project-links"><a href="https://github.com/monsmain/User-Agents-Checker" class="project-link" target="_blank" rel="noopener">↗ <span data-i18n="projects.view">مشاهده</span></a></div>
+                </div>
+                <div class="project-card">
+                    <p class="project-number">06</p>
+                    <h3 class="project-title" data-i18n="projects.p6_title">Refresher-Site</h3>
+                    <p class="project-desc" data-i18n="projects.p6_desc">Auto refresh/ping tool</p>
+                    <div class="project-tags"><span class="project-tag">Go</span><span class="project-tag">HTTP</span><span class="project-tag">Ping</span></div>
+                    <div class="project-links"><a href="https://github.com/monsmain/Refresher-Site" class="project-link" target="_blank" rel="noopener">↗ <span data-i18n="projects.view">مشاهده</span></a></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="reveal">
+            <div class="section-header">
+                <p class="section-subtitle" data-i18n="skills.subtitle">ابزارها و فناوری‌ها</p>
+                <h2 class="section-title" data-i18n="skills.title">مهارت‌های فنی</h2>
+            </div>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3 class="skill-category-title" data-i18n="skills.languages">زبان‌ها</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item" data-i18n="skills.list.go">Go</li>
+                        <li class="skill-item" data-i18n="skills.list.python">Python</li>
+                        <li class="skill-item" data-i18n="skills.list.javascript">JavaScript</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title" data-i18n="skills.security">امنیت</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item" data-i18n="skills.list.ethical">Ethical Hacking</li>
+                        <li class="skill-item" data-i18n="skills.list.bruteforce">Brute Force</li>
+                        <li class="skill-item" data-i18n="skills.list.scanning">Network Scanning</li>
+                        <li class="skill-item" data-i18n="skills.list.tor">Tor / Proxy</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title" data-i18n="skills.platforms">پلتفرم‌ها</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item" data-i18n="skills.list.cloudflare">Cloudflare</li>
+                        <li class="skill-item" data-i18n="skills.list.android">Android Studio</li>
+                        <li class="skill-item" data-i18n="skills.list.telegram">Telegram Bot</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title" data-i18n="skills.tools">ابزارها</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item" data-i18n="skills.list.git">Git / GitHub</li>
+                        <li class="skill-item" data-i18n="skills.list.linux">Linux</li>
+                        <li class="skill-item" data-i18n="skills.list.bash">Bash</li>
+                        <li class="skill-item" data-i18n="skills.list.vscode">VS Code</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="reveal">
+            <div class="section-header">
+                <p class="section-subtitle" data-i18n="contact.subtitle">بیایید با هم کار کنیم</p>
+                <h2 class="section-title" data-i18n="contact.title">در ارتباط باشید</h2>
+            </div>
+            <div class="contact-content">
+                <p class="contact-desc" data-i18n="contact.desc">پروژه‌ای در ذهن دارید؟</p>
+                <div class="social-links">
+                    <a href="https://github.com/monsmain" target="_blank" rel="noopener" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.46 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    </a>
+                    <a href="https://t.me/monsmain" target="_blank" rel="noopener" aria-label="Telegram">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.504 1.201-.828 1.23-.704.065-1.239-.466-1.919-.917-1.067-.7-1.669-1.137-2.704-1.818-1.197-.789-.421-1.225.262-1.932.176-.183 3.227-2.959 3.288-3.209.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.914.49-1.302.48-.428-.008-1.252-.242-1.865-.442-.752-.244-1.349-.374-1.297-.789.027-.216.324-.437.892-.662 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                    <a href="https://youtube.com/monsmain" target="_blank" rel="noopener" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="https://x.com/mons_main" target="_blank" rel="noopener" aria-label="X">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                </div>
+            </div>
         </section>
 
         <footer>
-            <div class="social-links">
-                <a href="https://github.com/monsmain" target="_blank" aria-label="GitHub" rel="noopener">
-                    <img src="images/github.png" alt="GitHub">
-                </a>
-                <a href="https://t.me/monsmain" target="_blank" aria-label="Telegram" rel="noopener">
-                    <img src="images/telegram.png" alt="Telegram">
-                </a>
-                <a href="https://youtube.com/monsmain" target="_blank" aria-label="YouTube" rel="noopener">
-                    <img src="images/youtube.png" alt="YouTube">
-                </a>
-                <a href="https://x.com/mons_main" target="_blank" aria-label="X" rel="noopener">
-                    <img src="images/x.png" alt="X">
-                </a>
-            </div>
-            <p data-lang-key="footer_thanks">از حمایت شما سپاسگزارم❤️</p>
+            <p class="footer-text" data-i18n="footer.built">ساخته شده با کد و اشتیاق</p>
+            <p class="footer-copyright" data-i18n="footer.copyright">© 2025 monsmain</p>
         </footer>
     </div>
 
-    <div id="qr-overlay" class="qr-overlay">
-        <div class="qr-modal">
-            <button class="qr-close" id="qr-close">&times;</button>
-            <h3 class="qr-title" id="qr-title"></h3>
-            <div id="qr-code" class="qr-code"></div>
-            <p class="qr-hint" data-lang-key="qr_hint">اسکن کنید با کیف پول</p>
-        </div>
-    </div>
+    <button class="back-to-top" id="back-top" aria-label="Back to top">↑</button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="galaxy.js?v=7"></script>
-    <script src="script.js?v=7"></script>
+    <script src="assets/js/i18n.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const updateLangText = () => {
+                const lt = document.getElementById('lang-text');
+                const isFa = document.documentElement.lang === 'fa';
+                lt.textContent = isFa ? 'EN' : 'FA';
+            };
+            document.addEventListener('langchange', updateLangText);
+            const observer = new MutationObserver(() => {
+                if (document.body.classList.contains('loaded')) { updateLangText(); observer.disconnect(); }
+            });
+            observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        });
+    </script>
 </body>
 </html>

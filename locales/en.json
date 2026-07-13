@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "title": "monsmain — Developer & Security Tools Builder",
+    "description": "Portfolio of monsmain — developer focused on security tools, ethical hacking, and Go. The world is full of bugs; I'm just here to debug it."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills",
+    "blog": "Blog",
+    "donate": "Donate",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "name": "monsmain",
+    "role": "Developer & Security Tools Builder",
+    "typed": [
+      "Building security tools",
+      "Writing Go and Python",
+      "Exploring ethical hacking",
+      "Debugging the world",
+      "Shipping open-source tools"
+    ],
+    "scroll": "Scroll to explore"
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Who I Am",
+    "p1": "The world is full of bugs; I'm just here to debug it. I'm a developer focused on building security tools and ethical hacking utilities.",
+    "p2": "I work primarily with Go, Python, and JavaScript. My projects range from brute-force tools and network scanners to cloud storage apps on Cloudflare Workers with Telegram bot integration.",
+    "p3": "I'm currently learning advanced ethical hacking and programming. When I'm not coding, I'm exploring new tools and contributing to open source."
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "subtitle": "Things I've Built",
+    "view": "View Project",
+    "source": "Source Code",
+    "p1_title": "uploader",
+    "p1_desc": "A Cloudflare Worker-based cloud storage app with Telegram bot integration and R2 storage support.",
+    "p2_title": "ighack",
+    "p2_desc": "Instagram password brute-force tool with Tor and proxy support. No root required. 36+ stars on GitHub.",
+    "p3_title": "endpoint-scanner",
+    "p3_desc": "A fast endpoint discovery and port scanner written in Go.",
+    "p4_title": "app-sms-irani",
+    "p4_desc": "Iranian SMS bomber — Android app built with Kotlin and Go backend with multi-provider API support.",
+    "p5_title": "User-Agents-Checker",
+    "p5_desc": "A user agents checker tool written in Go. Validates and analyzes browser user agent strings.",
+    "p6_title": "Refresher-Site",
+    "p6_desc": "Automatically refreshes or pings a website in an infinite loop using customizable HTTP headers."
+  },
+  "skills": {
+    "title": "Technical Skills",
+    "subtitle": "Tools & Technologies",
+    "languages": "Languages",
+    "security": "Security",
+    "platforms": "Platforms",
+    "tools": "Tools & DevOps",
+    "list": {
+      "go": "Go",
+      "python": "Python",
+      "javascript": "JavaScript",
+      "ethical": "Ethical Hacking",
+      "bruteforce": "Brute Force",
+      "scanning": "Network Scanning",
+      "tor": "Tor / Proxy",
+      "cloudflare": "Cloudflare Workers",
+      "android": "Android Studio",
+      "telegram": "Telegram Bot",
+      "git": "Git / GitHub",
+      "linux": "Linux",
+      "bash": "Bash",
+      "vscode": "VS Code"
+    }
+  },
+  "stats": {
+    "repos": "GitHub Repos",
+    "years": "Years Experience",
+    "stars": "GitHub Stars",
+    "coffee": "Cups of Coffee"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Let's Work Together",
+    "desc": "Have a project in mind? Feel free to reach out through any of these platforms.",
+    "github": "GitHub",
+    "telegram": "Telegram",
+    "youtube": "YouTube",
+    "x": "X (Twitter)"
+  },
+  "footer": {
+    "built": "Built with code and passion",
+    "copyright": "© 2025 monsmain. All rights reserved.",
+    "back_top": "Back to Top"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Thoughts & Tutorials",
+    "read_more": "Read More",
+    "no_posts": "No posts yet. Check back soon!",
+    "coming_soon": "Coming Soon",
+    "coming_soon_desc": "I'm working on some exciting articles about security tools, Go, and ethical hacking. Stay tuned!"
+  },
+  "donate": {
+    "page_title": "Financial Support",
+    "main_title": "Support My Work",
+    "main_subtitle": "Your contribution empowers me to create more and better content. Every amount is valuable.",
+    "tab_crypto": "Crypto",
+    "tab_rial": "Rial (Toman)",
+    "tab_crypto_desc": "USDT, TRX, ETH, SOL & more",
+    "tab_rial_desc": "Pay in Iranian Rial",
+    "copy_button": "Copy",
+    "copied_button": "Copied!",
+    "rial_button": "Donate",
+    "rial_popular": "Popular",
+    "qr_scan": "Scan to get address",
+    "qr_button": "QR",
+    "footer_thanks": "Thank you for your support❤️"
+  }
+}
