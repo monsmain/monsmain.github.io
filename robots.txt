@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://monsmain.github.io/sitemap.xml
