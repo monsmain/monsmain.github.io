@@ -47,7 +47,7 @@
     "p2_desc": "Instagram password brute-force tool with Tor and proxy support. No root required. 36+ stars on GitHub.",
     "p3_title": "endpoint-scanner",
     "p3_desc": "A fast endpoint discovery and port scanner written in Go.",
-    "p4_title": "app-sms-irani",
+    "p4_title": "monsmain-sms",
     "p4_desc": "Iranian SMS bomber — Android app built with Kotlin and Go backend with multi-provider API support.",
     "p5_title": "User-Agents-Checker",
     "p5_desc": "A user agents checker tool written in Go. Validates and analyzes browser user agent strings.",
