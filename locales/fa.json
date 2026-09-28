@@ -47,7 +47,7 @@
     "p2_desc": "ابزار brute-force پسورد اینستاگرام با پشتیبانی Tor و proxy. بدون نیاز به root. بیش از ۳۶ ستاره در گیت‌هاب.",
     "p3_title": "endpoint-scanner",
     "p3_desc": "یک اسکنر سریع کشف endpoint و پورت نوشته شده با Go.",
-    "p4_title": "app-sms-irani",
+    "p4_title": "monsmain-sms",
     "p4_desc": "اس‌ام‌اس بمبر ایرانی — اپ اندروید با Kotlin و بک‌اند Go با پشتیبانی چند provider.",
     "p5_title": "User-Agents-Checker",
     "p5_desc": "ابزار چکر یوزر ایجنت نوشته شده با Go. اعتبارسنجی و تحلیل رشته‌های user agent مرورگر.",
