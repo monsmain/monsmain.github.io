@@ -41,7 +41,7 @@
     "subtitle": "چیزهایی که ساختم",
     "view": "مشاهده پروژه",
     "source": "کد منبع",
-    "p1_title": "uploader",
+    "p1_title": "monsmain cloud",
     "p1_desc": "یک اپ فضای ذخیره‌سازی ابری مبتنی بر Cloudflare Worker با یکپارچه‌سازی bot تلگرام و پشتیبانی R2.",
     "p2_title": "ighack",
     "p2_desc": "ابزار brute-force پسورد اینستاگرام با پشتیبانی Tor و proxy. بدون نیاز به root. بیش از ۳۶ ستاره در گیت‌هاب.",
