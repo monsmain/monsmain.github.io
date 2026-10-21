@@ -41,7 +41,7 @@
     "subtitle": "Things I've Built",
     "view": "View Project",
     "source": "Source Code",
-    "p1_title": "uploader",
+    "p1_title": "monsmain cloud",
     "p1_desc": "A Cloudflare Worker-based cloud storage app with Telegram bot integration and R2 storage support.",
     "p2_title": "ighack",
     "p2_desc": "Instagram password brute-force tool with Tor and proxy support. No root required. 36+ stars on GitHub.",
