@@ -11,7 +11,7 @@
       { name: "Ethereum",       address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/ethereum.png" },
       { name: "Solana",         address: "BnQ11hLZTDJQBZSzVWxJshT3o1SEUWBn1QahdxTYDH8d", logo: "images/solana.png" },
       { name: "Shiba",          address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/shiba.png" },
-      { name: "TON",            address: "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c", logo: "images/ton.png" }
+      { name: "***",            address: "******************************************", logo: "images/***.png" }
     ],
     rialOptions: [
       { amount: "۵۰,۰۰۰ تومان",  amountEn: "50,000 Toman",  value: 50000,    url: "https://sponsoracb.mydigify.app/product/3106809/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-8", featured: false },
