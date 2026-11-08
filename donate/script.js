@@ -4,19 +4,18 @@
 
   const config = {
     wallets: [
+      { name: "Gram(Ton)",            address: "UQDdNkQb9KqKam7P12Pv3h64Ldhr3PsUVrRf9Lc_h2VxhPeC", logo: "images/ton.png" },
       { name: "USDT (Bep20)",  address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/tether.png" },
       { name: "USDT (Polygon)", address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/tether.png" },
       { name: "TRX (Tron)",     address: "TPDgDE7nEKHnDLX25wLtdjjs76nAK9pQE7",          logo: "images/tron.png" },
       { name: "Polygon (Matic)", address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/polygon.png" },
-      { name: "Ethereum",       address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/ethereum.png" },
-      { name: "Solana",         address: "BnQ11hLZTDJQBZSzVWxJshT3o1SEUWBn1QahdxTYDH8d", logo: "images/solana.png" },
-      { name: "Shiba",          address: "0xD3fCf0b46D38A423B6f33aaCf041493965AE83C5", logo: "images/shiba.png" },
-      { name: "***",            address: "******************************************", logo: "images/***.png" }
+      { name: "Solana",         address: "BnQ11hLZTDJQBZSzVWxJshT3o1SEUWBn1QahdxTYDH8d", logo: "images/solana.png" }
     ],
     rialOptions: [
       { amount: "۵۰,۰۰۰ تومان",  amountEn: "50,000 Toman",  value: 50000,    url: "https://sponsoracb.mydigify.app/product/3106809/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-8", featured: false },
       { amount: "۱۰۰,۰۰۰ تومان", amountEn: "100,000 Toman", value: 100000,   url: "https://sponsoracb.mydigify.app/product/3106808/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-7", featured: false },
       { amount: "۲۵۰,۰۰۰ تومان", amountEn: "250,000 Toman", value: 250000,   url: "https://sponsoracb.mydigify.app/product/3106807/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-6", featured: false },
+      { amount: "۳۰۰,۰۰۰ تومان", amountEn: "300,000 Toman", value: 300000,   url: "https://sponsoracb.mydigify.app/product/3571023/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-9", featured: false },
       { amount: "۵۰۰,۰۰۰ تومان", amountEn: "500,000 Toman", value: 500000,   url: "https://sponsoracb.mydigify.app/product/3106772/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-5", featured: false },
       { amount: "۱,۰۰۰,۰۰۰ تومان", amountEn: "1,000,000 Toman", value: 1000000, url: "https://sponsoracb.mydigify.app/product/3106771/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-4", featured: true },
       { amount: "۳,۰۰۰,۰۰۰ تومان", amountEn: "3,000,000 Toman", value: 3000000, url: "https://sponsoracb.mydigify.app/product/3106770/%D8%AF%D9%88%D9%86%DB%8C%D8%AA-%D8%B1%DB%8C%D8%A7%D9%84%DB%8C-%7C-monsmain-3", featured: false },
