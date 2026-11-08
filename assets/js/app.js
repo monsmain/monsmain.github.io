@@ -1,17 +1,17 @@
-import { CodeUniverse } from './scene.js';
 import { TypeEffect, CounterAnim, SectionReveal } from './effects.js';
 
 let universe = null;
 let typedEffect = null;
 
-function init3D() {
+async function init3D() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   try {
-    universe = new CodeUniverse(canvas);
+    const { GalaxyBackground } = await import('./scene.js');
+    universe = new GalaxyBackground(canvas);
   } catch (e) {
-    console.warn('[3D] CodeUniverse init failed (hiding canvas):', e);
-    canvas.style.display = 'none';
+    console.warn('[3D] galaxy init failed (using fallback gradient):', e);
+    canvas.style.background = 'radial-gradient(ellipse at 50% 60%, #1b2a6b 0%, #0a0f2e 45%, #000 100%)';
   }
 }
 
@@ -38,15 +38,20 @@ function initReveals() {
 }
 
 function initSmoothScroll() {
-  const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 64;
+  const getNavH = () => {
+    const nav = document.querySelector('.nav');
+    return nav ? nav.offsetHeight : 64;
+  };
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const href = link.getAttribute('href');
-    if (href === '#' || href.length < 2) return; // skip bare "#"
+    if (href === '#' || href.length < 2) return;
     link.addEventListener('click', (e) => {
       const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      const top = target.getBoundingClientRect().top + window.scrollY - navH - 8;
+      const top = href === '#home'
+        ? 0
+        : target.getBoundingClientRect().top + window.scrollY - getNavH() - 8;
       window.scrollTo({ top, behavior: 'smooth' });
     });
   });
@@ -82,8 +87,47 @@ function initMenu() {
   });
 }
 
+function initBottomNav() {
+  const links = Array.from(document.querySelectorAll('.bottom-nav .bn-link'));
+  if (!links.length) return;
+
+  const anchors = links
+    .map((link) => ({ link, href: link.getAttribute('href') || '' }))
+    .filter((item) => item.href.length > 1 && item.href.startsWith('#'))
+    .map((item) => ({ link: item.link, target: document.querySelector(item.href) }))
+    .filter((item) => item.target);
+  if (!anchors.length) return;
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const probe = window.innerHeight * 0.35;
+    let current = anchors[0];
+    anchors.forEach((item) => {
+      if (item.target.getBoundingClientRect().top <= probe) current = item;
+    });
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    if (atBottom) current = anchors[anchors.length - 1];
+    links.forEach((link) => link.classList.toggle('active', link === current.link));
+  };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
 async function main() {
-  await i18n.init();
+  try {
+    await i18n.init();
+  } catch (e) {
+    console.error('[app] i18n failed:', e);
+  }
+  document.body.classList.add('loaded');
   init3D();
   initTyped();
   initStats();
@@ -91,6 +135,7 @@ async function main() {
   initSmoothScroll();
   initBackToTop();
   initMenu();
+  initBottomNav();
 }
 
 
