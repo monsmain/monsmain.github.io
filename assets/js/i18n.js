@@ -88,7 +88,12 @@ class I18n {
     this._safeLocalStorage('set', 'user_lang', lang);
 
     document.querySelectorAll('.lang-btn').forEach((btn) => {
-      btn.classList.toggle('active', btn.dataset.lang === lang);
+      const isActive = btn.dataset.lang === lang;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
+    });
+    document.querySelectorAll('.lang-switcher').forEach((el) => {
+      el.dataset.active = lang;
     });
 
     document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));

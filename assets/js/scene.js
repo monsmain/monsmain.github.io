@@ -34,7 +34,12 @@ class GalaxyBackground {
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.setClearColor(0x000000, 1);
 
-    this.clock = new THREE.Clock();
+    this.baseY = 3;
+    this.time = 0;
+    this.last = 0;
+    this.scrollTarget = 0;
+    this.scrollCurrent = 0;
+    this.pointer = { x: 0, y: 0, tx: 0, ty: 0 };
     this.lastW = 0;
     this.lastH = 0;
     this._rafId = null;
@@ -43,6 +48,8 @@ class GalaxyBackground {
 
     this._onResize = this._onResize.bind(this);
     this._onVisibility = this._onVisibility.bind(this);
+    this._onScroll = this._onScroll.bind(this);
+    this._onPointer = this._onPointer.bind(this);
 
     this._buildGalaxy();
     this._onResize();
@@ -104,6 +111,21 @@ class GalaxyBackground {
     window.addEventListener('resize', this._onResize);
     window.addEventListener('orientationchange', this._onResize);
     document.addEventListener('visibilitychange', this._onVisibility);
+    if (!this.reducedMotion) {
+      window.addEventListener('scroll', this._onScroll, { passive: true });
+      window.addEventListener('pointermove', this._onPointer, { passive: true });
+      this._onScroll();
+    }
+  }
+
+  _onScroll() {
+    this.scrollTarget = Math.max(0, window.scrollY || window.pageYOffset || 0);
+  }
+
+  _onPointer(e) {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    this.pointer.tx = (e.clientX / window.innerWidth - 0.5) * 2;
+    this.pointer.ty = (e.clientY / window.innerHeight - 0.5) * 2;
   }
 
   _onResize() {
@@ -116,7 +138,7 @@ class GalaxyBackground {
 
     const aspect = w / h;
     this.camera.aspect = aspect;
-    this.camera.position.y = 3 + (1 - Math.min(aspect, 1)) * 1.5;
+    this.baseY = 3 + (1 - Math.min(aspect, 1)) * 1.5;
     this.camera.updateProjectionMatrix();
 
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, this.isMobile ? 1.5 : 2));
@@ -134,7 +156,8 @@ class GalaxyBackground {
   _start() {
     if (this._disposed || this._running || document.hidden) return;
     this._running = true;
-    this._animate();
+    this.last = performance.now();
+    this._animate(this.last);
   }
 
   _stop() {
@@ -146,16 +169,30 @@ class GalaxyBackground {
   }
 
   _frame(t) {
-    this.camera.position.x = Math.cos(t * 0.05);
-    this.camera.position.z = Math.sin(t * 0.05);
+    const px = this.scrollCurrent;
+    const depth = 1 - Math.exp(-px / 1800);
+    const angle = t * 0.05 + px * 0.0009;
+    const radius = 1 + depth * 1.6;
+    const height = this.baseY * (1 - depth * 0.5);
+
+    this.camera.position.x = Math.cos(angle) * radius + this.pointer.x * 0.3;
+    this.camera.position.z = Math.sin(angle) * radius;
+    this.camera.position.y = height - this.pointer.y * 0.2;
     this.camera.lookAt(0, 0, 0);
     this.renderer.render(this.scene, this.camera);
   }
 
-  _animate() {
+  _animate(now) {
     if (!this._running || this._disposed) return;
-    this._frame(this.clock.getElapsedTime());
-    this._rafId = requestAnimationFrame(() => this._animate());
+    const dt = Math.min(Math.max((now - this.last) / 1000, 0), 0.1);
+    this.last = now;
+    const k = 1 - Math.exp(-dt * 5);
+    this.scrollCurrent += (this.scrollTarget - this.scrollCurrent) * k;
+    this.pointer.x += (this.pointer.tx - this.pointer.x) * k;
+    this.pointer.y += (this.pointer.ty - this.pointer.y) * k;
+    this.time += dt;
+    this._frame(this.time);
+    this._rafId = requestAnimationFrame((n) => this._animate(n));
   }
 
   dispose() {
@@ -164,6 +201,8 @@ class GalaxyBackground {
     this._stop();
     window.removeEventListener('resize', this._onResize);
     window.removeEventListener('orientationchange', this._onResize);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('pointermove', this._onPointer);
     document.removeEventListener('visibilitychange', this._onVisibility);
     this.geometry.dispose();
     this.material.dispose();

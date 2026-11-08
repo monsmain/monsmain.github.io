@@ -31,14 +31,12 @@
   },
   "about": {
     "title": "About Me",
-    "subtitle": "Who I Am",
     "p1": "The world is full of bugs; I'm just here to debug it. I'm a developer focused on building security tools and ethical hacking utilities.",
     "p2": "I work primarily with Go, Python, and JavaScript. My projects range from brute-force tools and network scanners to cloud storage apps on Cloudflare Workers with Telegram bot integration.",
     "p3": "I'm currently learning advanced ethical hacking and programming. When I'm not coding, I'm exploring new tools and contributing to open source."
   },
   "projects": {
     "title": "Featured Projects",
-    "subtitle": "Things I've Built",
     "view": "View Project",
     "source": "Source Code",
     "p1_title": "monsmain cloud",
@@ -56,7 +54,6 @@
   },
   "skills": {
     "title": "Technical Skills",
-    "subtitle": "Tools & Technologies",
     "languages": "Languages",
     "security": "Security",
     "platforms": "Platforms",
@@ -86,7 +83,6 @@
   },
   "contact": {
     "title": "Get In Touch",
-    "subtitle": "Let's Work Together",
     "desc": "Have a project in mind? Feel free to reach out through any of these platforms.",
     "github": "GitHub",
     "telegram": "Telegram",
@@ -94,7 +90,6 @@
     "x": "X (Twitter)"
   },
   "footer": {
-    "built": "Built with code and passion",
     "copyright": "© 2026 monsmain. All rights reserved.",
     "back_top": "Back to Top"
   },
