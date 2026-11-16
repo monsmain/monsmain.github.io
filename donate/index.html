@@ -24,6 +24,16 @@
   <div id="transition-overlay" aria-hidden="true"></div>
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
+  <!-- QR modal -->
+  <div id="qr-modal" class="qr-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="qr-title-text">
+    <div class="qr-modal-content">
+      <button class="qr-close" aria-label="بستن" data-i18n-attr="aria-label:ui.close">&times;</button>
+      <h3 class="qr-title" id="qr-title-text" data-i18n="donate.qr_scan">آدرس را اسکن کنید</h3>
+      <canvas id="qr-canvas" width="220" height="220"></canvas>
+      <p class="qr-address" id="qr-address-text"></p>
+    </div>
+  </div>
+
   <!-- Navbar -->
   <nav class="nav">
     <p class="nav-logo">monsmain<span>_</span></p>
@@ -95,12 +105,7 @@
 
     <!-- Crypto panel -->
     <section class="tab-panel active" data-panel="crypto" role="tabpanel" aria-label="Crypto donations">
-      <div class="np-frame-wrap">
-        <iframe src="https://nowpayments.io/donation/monsmain" title="NOWPayments Donation" frameborder="0" loading="lazy" allow="clipboard-write">
-          Can't load widget
-        </iframe>
-      </div>
-      <a class="np-fallback" href="https://nowpayments.io/donation/monsmain" target="_blank" rel="noopener">nowpayments.io/donation/monsmain &#8599;</a>
+      <main id="wallet-container"></main>
     </section>
 
     <!-- Rial panel -->
@@ -132,6 +137,7 @@
   <button class="back-to-top" id="back-top" aria-label="Back to top" data-i18n-attr="aria-label:footer.back_top">↑</button>
 
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script type="module" src="../assets/js/app.js"></script>
   <script src="script.js"></script>

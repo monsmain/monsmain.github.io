@@ -116,12 +116,6 @@
     "rial_popular": "Popular",
     "qr_scan": "Scan to get address",
     "qr_button": "QR",
-    "footer_thanks": "Thank you for your support❤️",
-    "np_title": "Pay with NOWPayments",
-    "np_desc": "Choose from 300+ cryptocurrencies and any amount you like.",
-    "np_show": "Show payment form",
-    "np_hide": "Hide payment form",
-    "np_open": "Open in a new tab",
-    "np_or": "Or send directly to a wallet"
+    "footer_thanks": "Thank you for your support❤️"
   }
 }
