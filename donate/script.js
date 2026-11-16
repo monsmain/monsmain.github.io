@@ -54,6 +54,11 @@
     });
     const qrTitle = document.querySelector('.qr-title');
     if (qrTitle) qrTitle.textContent = t('donate.qr_scan');
+    const npToggle = document.getElementById('np-toggle');
+    const npWrap = document.getElementById('np-frame-wrap');
+    if (npToggle && npWrap) {
+      npToggle.textContent = t(npWrap.hasAttribute('hidden') ? 'donate.np_show' : 'donate.np_hide');
+    }
   }
 
   function renderWallets() {
@@ -122,6 +127,33 @@
     if (lastFocusedBeforeQr) lastFocusedBeforeQr.focus();
   }
 
+  const NP_WIDGET_URL = 'https://nowpayments.io/embeds/donation-widget?api_key=MQMNEFY-ETT4EZJ-GXBGZMX-YVR3CTD&source=lk_donation&medium=referral';
+
+  function toggleNowPayments() {
+    const wrap = document.getElementById('np-frame-wrap');
+    const btn = document.getElementById('np-toggle');
+    if (!wrap || !btn) return;
+    const opening = wrap.hasAttribute('hidden');
+    if (opening) {
+      if (!wrap.firstElementChild) {
+        const frame = document.createElement('iframe');
+        frame.src = NP_WIDGET_URL;
+        frame.title = 'NOWPayments Donation';
+        frame.loading = 'lazy';
+        frame.setAttribute('scrolling', 'no');
+        frame.setAttribute('frameborder', '0');
+        frame.width = '354';
+        frame.height = '680';
+        wrap.appendChild(frame);
+      }
+      wrap.removeAttribute('hidden');
+    } else {
+      wrap.setAttribute('hidden', '');
+    }
+    btn.setAttribute('aria-expanded', String(opening));
+    btn.textContent = t(opening ? 'donate.np_hide' : 'donate.np_show');
+  }
+
   function switchTab(tab) {
     const validTabs = ['crypto', 'rial'];
     if (!validTabs.includes(tab)) tab = 'crypto';
@@ -175,6 +207,9 @@
         if (qrBtn) showQR(qrBtn.dataset.address);
       });
     }
+
+    const npToggle = document.getElementById('np-toggle');
+    if (npToggle) npToggle.addEventListener('click', toggleNowPayments);
 
     if (dom.tabContainer) {
       dom.tabContainer.addEventListener('click', (e) => {

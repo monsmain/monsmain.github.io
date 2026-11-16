@@ -105,6 +105,20 @@
 
     <!-- Crypto panel -->
     <section class="tab-panel active" data-panel="crypto" role="tabpanel" aria-label="Crypto donations">
+      <div class="np-card" id="np-card">
+        <div class="np-header">
+          <div class="np-title-wrap">
+            <h3 class="np-title" data-i18n="donate.np_title">پرداخت با NOWPayments</h3>
+            <p class="np-desc" data-i18n="donate.np_desc">با بیش از ۳۰۰ ارز دیجیتال، ارز و مبلغ دلخواهت را انتخاب کن.</p>
+          </div>
+        </div>
+        <div class="np-actions">
+          <button type="button" class="np-toggle" id="np-toggle" aria-expanded="false" aria-controls="np-frame-wrap" data-i18n="donate.np_show">نمایش فرم پرداخت</button>
+          <a class="np-link" id="np-link" href="https://nowpayments.io/donation?api_key=MQMNEFY-ETT4EZJ-GXBGZMX-YVR3CTD" target="_blank" rel="noopener" data-i18n="donate.np_open">باز کردن در صفحه‌ی جدید</a>
+        </div>
+        <div class="np-frame-wrap" id="np-frame-wrap" hidden></div>
+      </div>
+      <p class="np-sep" data-i18n="donate.np_or">یا مستقیم به کیف پول‌ها واریز کن</p>
       <main id="wallet-container"></main>
     </section>
 
